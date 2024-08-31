@@ -1,4 +1,7 @@
-<?php include 'config.php'; ?>
+<?php
+$GLOBALS['incluir_rodape'] = false; // Define que o rodapé não deve ser incluído
+include 'config.php';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,7 +14,6 @@
             color: <?php echo $text_color; ?>;
         }
         header {
-            
             background-color: <?php echo $primary_color; ?>;
         }
         footer {

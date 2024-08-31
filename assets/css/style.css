@@ -1,15 +1,26 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
     font-family: Arial, sans-serif;
-    background-color:  #444; /* Cor secundária */
+    background-color: #444; /* Cor secundária */
     color: #d4af37; /* Cor do texto */ 
     margin: 0;
     padding: 0;
-    padding-bottom: 60px; /* Espaço extra para o rodapé fixo */
 }
 
-/* Header e Footer , cabeçalho e rodapé*/
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Header e Footer, cabeçalho e rodapé */
 header, footer {
-    background-color:  #1c1c1c; /* Cor primária */
+    background-color: #1c1c1c; /* Cor primária */
     color: #d4af37;
     padding: 10px 0;
     text-align: center;
@@ -31,12 +42,8 @@ nav ul li {
 
 /* Links de navegação */
 nav ul li a {
-    color:#d4af37;
+    color: #d4af37;
     text-decoration: none;
-}
-
-main {
-    padding: 20px;
 }
 
 /* Seções */
@@ -56,7 +63,7 @@ main {
 
 /* Produtos */
 .produto-item {
-    background-color:#f0d28b;
+    background-color: #f0d28b;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
@@ -100,6 +107,7 @@ main {
     font-weight: bold;
     color: #333;
 }
+
 .banner {
     background-color: #f0d28b; /* Cor de fundo suave */
     padding: 20px; /* Espaçamento interno */
@@ -128,23 +136,14 @@ main {
     border-radius: 4px; /* Bordas arredondadas na imagem */
 }
 
-
-/* Rodapé fixo */
+/* Rodapé */
 footer {
     background-color: #1c1c1c;
     color: #d4af37;
     text-align: center;
     padding: 10px 0;
-    position: relative;
     width: 100%;
-    bottom: 0;
 }
-@media (min-width: 768px) {
-    .produto-item {
-        max-width: 600px; /* Expande até 600px em telas maiores */
-    }
-}
-
 
 /* Responsividade para dispositivos móveis */
 @media (max-width: 768px) {
