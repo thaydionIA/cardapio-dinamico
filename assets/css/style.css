@@ -54,10 +54,9 @@ nav ul li a {
 
 /* Produtos Container */
 .produtos-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* Alinha os itens ao início da linha */
-    gap: 20px; /* Espaçamento entre os itens */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Define três colunas iguais */
+    gap: 10px; /* Espaçamento entre os itens */
     padding: 20px 0;
 }
 
@@ -70,8 +69,6 @@ nav ul li a {
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
-    flex: 1 1 200px; /* Permite que o item cresça, mas define um tamanho mínimo */
-    max-width: 300px; /* Limita a largura máxima do contêiner */
     display: flex;
     align-items: flex-start;
 }
@@ -184,12 +181,11 @@ footer {
     }
 
     .produtos-container {
-        flex-direction: column;
+        grid-template-columns: 1fr; /* Ajusta para uma coluna em telas menores */
         align-items: center;
     }
 
     .produto-item {
         max-width: 100%;
-        flex: 1 1 auto;
     }
 }
