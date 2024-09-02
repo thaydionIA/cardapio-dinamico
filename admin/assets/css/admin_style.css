@@ -96,8 +96,9 @@ footer {
     background-color: #1c1c1c; /* Cor de fundo */
     color: #d4af37; /* Cor do texto */
     text-align: center;/* Centraliza o texto dentro do rodapé */
-    padding: 10px 0; /* Espaçamento interno vertical de 10px */
-    position: relative; /* Posicionamento relativo para manter a estrutura */
+    padding: 10px 0; /* Espaçamento interno vertical de 10px e */
+    position: relative; /* Posicionamento relativo para manter a estrutura */ 
+
 }
 
 /* Para garantir que o conteúdo acima do rodapé não seja sobreposto */
