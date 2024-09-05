@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css">
     <style>
         body {
-            color: <?php echo $text_color; ?>;
+            color: <?php echo $text_color; ?>; 
         }
         header {
             background-color: <?php echo $primary_color; ?>;

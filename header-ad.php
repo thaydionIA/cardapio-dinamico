@@ -12,7 +12,7 @@
         }
         header {
             background-color: <?php echo $primary_color; ?>;
-            display: flex;
+            display: flex; 
             align-items: center;
             justify-content: space-between;
             padding: 10px;

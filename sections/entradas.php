@@ -43,8 +43,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </div>
         <?php endforeach; ?>
-    </div>
-
+    </div> 
     <!-- Inclusão do rodapé se o arquivo estiver sendo acessado diretamente -->
     <?php if ($incluir_rodape): ?>
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; ?>

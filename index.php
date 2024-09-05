@@ -27,7 +27,7 @@ include 'config.php';
         <div style="display: flex; align-items: center;">
             <img src="path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
             <h1><?php echo $site_name; ?></h1>
-        </div>
+        </div> 
         <nav>
             <ul>
                 <?php foreach ($sections as $id => $section): ?>
