@@ -32,12 +32,10 @@ $sections = [
 
 // Verifica se o usuário está logado e adiciona o link de "Meu Perfil"
 if (isset($_SESSION['user_id'])) {
-    // Adiciona "Meu Perfil" ao menu
     $sections['perfil'] = [
         "title" => "Meu Perfil",
         "url" => "perfil.php"
     ];
-    // Adiciona a opção de Sair
     $sections['logout'] = [
         "title" => "Sair",
         "url" => "logout.php"
@@ -54,12 +52,3 @@ if (isset($_SESSION['user_id'])) {
     ];
 }
 ?>
-
-<!-- Menu dinâmico gerado com base nas seções -->
-<nav style="background-color: <?= $primary_color ?>; color: <?= $text_color ?>;">
-    <ul>
-        <?php foreach ($sections as $key => $section): ?>
-            <li><a href="<?= $section['url'] ?>" style="color: <?= $text_color ?>;"><?= $section['title'] ?></a></li>
-        <?php endforeach; ?>
-    </ul>
-</nav>

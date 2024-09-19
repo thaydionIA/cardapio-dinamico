@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio - <?php echo $site_name; ?></title>
     <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             color: <?php echo $text_color; ?>; 
@@ -65,7 +66,9 @@
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
     </div>
-
+    <div class="cart-icon" onclick="window.location.href='carrinho.php'">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
 
     <nav>
         <ul>
