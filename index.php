@@ -1,6 +1,7 @@
 <?php
 $GLOBALS['incluir_rodape'] = false; // Define que o rodapé não deve ser incluído
 include 'config.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

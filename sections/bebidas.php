@@ -39,7 +39,9 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h3><?php echo htmlspecialchars($produto['nome']); ?></h3>
                 <p><?php echo htmlspecialchars($produto['descricao']); ?></p>
                 <p class="preco">Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+        
             </div>
+            
         </div>
         <?php endforeach; ?>
     </div>

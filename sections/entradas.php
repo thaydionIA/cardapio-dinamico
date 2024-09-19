@@ -1,4 +1,5 @@
 <?php
+
 // Verificar se a variável global $incluir_rodape está definida e se deve incluir o rodapé
 $incluir_rodape = !isset($GLOBALS['incluir_rodape']) || $GLOBALS['incluir_rodape'];
 
