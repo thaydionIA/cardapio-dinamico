@@ -42,6 +42,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
     echo "Produto ID: $produto_id foi adicionado ao carrinho com quantidade: $quantidade.<br>";
 }
 
+// Remover produto do carrinho
+if (isset($_GET['remove_id'])) {
+    $remove_id = $_GET['remove_id'];
+
+    // Remove do carrinho na sessão
+    if (array_key_exists($remove_id, $_SESSION['carrinho'])) {
+        unset($_SESSION['carrinho'][$remove_id]);
+
+        // Remover do banco de dados
+        $usuario_id = $_SESSION['user_id'];
+        try {
+            $stmt = $pdo->prepare("DELETE FROM carrinho_compras WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
+            $stmt->bindParam(':usuario_id', $usuario_id);
+            $stmt->bindParam(':produto_id', $remove_id);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erro ao remover produto do carrinho: " . $e->getMessage();
+        }
+    }
+}
+
 // Buscar produtos do carrinho no banco de dados
 $usuario_id = $_SESSION['user_id'];
 try {
@@ -92,6 +113,7 @@ if (empty($_SESSION['carrinho'])) {
             echo "<p>Quantidade: " . $quantidade . "</p>";
             echo "<p>Preço Unitário: R$ " . number_format($produto['preco'], 2, ',', '.') . "</p>";
             echo "<p>Subtotal: R$ " . number_format($subtotal, 2, ',', '.') . "</p>";
+            echo "<a href='?remove_id=" . $produto_id . "' class='remover-produto' title='Remover'>✖</a>"; // Ícone de remover
             echo "</div>";
             echo "</div>";
         }
