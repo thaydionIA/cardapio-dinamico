@@ -11,6 +11,7 @@ if (basename($_SERVER['PHP_SELF']) == 'bebidas.php') {
 require_once dirname(__DIR__) . '/db/conexao.php';
 $base_url = '/cardapio-dinamico/admin/uploads/produtos/';
 
+// Preparar a consulta de produtos da categoria "bebidas"
 $stmt = $pdo->prepare("SELECT * FROM produtos WHERE categoria = 'bebidas' ORDER BY nome");
 $stmt->execute();
 $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,9 +40,19 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h3><?php echo htmlspecialchars($produto['nome']); ?></h3>
                 <p><?php echo htmlspecialchars($produto['descricao']); ?></p>
                 <p class="preco">Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
-        
+
+                <!-- Formulário para adicionar o produto ao carrinho -->
+                <form action="/cardapio-dinamico/carrinho.php" method="POST">
+                    <input type="hidden" name="produto_id" value="<?php echo $produto['id']; ?>">
+                    
+                    <!-- Campo de quantidade -->
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" name="quantidade" value="1" min="1" required>
+                    
+                    <!-- Botão de adicionar ao carrinho -->
+                    <button type="submit">Adicionar ao Carrinho</button>
+                </form>
             </div>
-            
         </div>
         <?php endforeach; ?>
     </div>
