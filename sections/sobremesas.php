@@ -37,12 +37,16 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p><?php echo htmlspecialchars($produto['descricao']); ?></p>
             <p class="preco">Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
             <!-- Formulário para adicionar ao carrinho -->
-            <form action="carrinho.php" method="POST">
-                <input type="hidden" name="produto_id" value="<?php echo $produto['id']; ?>">
-                <label for="quantidade_<?php echo $produto['id']; ?>">Quantidade:</label>
-                <input type="number" name="quantidade" id="quantidade_<?php echo $produto['id']; ?>" value="1" min="1" required>
-                <button type="submit">Adicionar ao Carrinho</button>
-            </form>
+            <form action="/cardapio-dinamico/carrinho.php" method="POST">
+                    <input type="hidden" name="produto_id" value="<?php echo $produto['id']; ?>">
+                    
+                    <!-- Campo de quantidade -->
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" name="quantidade" value="1" min="1" required>
+                    
+                    <!-- Botão de adicionar ao carrinho -->
+                    <button type="submit">Adicionar ao Carrinho</button>
+                </form>
         </div>
     </div>
     <?php endforeach; ?>

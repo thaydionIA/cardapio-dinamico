@@ -189,3 +189,29 @@ footer {
         max-width: 100%;
     }
 }
+
+
+
+
+
+
+.produto-item {
+    position: relative;
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.remover-produto {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #ff0000; /* Tom de vermelho */
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.remover-produto:hover {
+    color: #cc0000; /* Vermelho mais escuro ao passar o mouse */
+}

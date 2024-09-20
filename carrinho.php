@@ -102,7 +102,7 @@ if (empty($_SESSION['carrinho'])) {
             $valor_total += $subtotal; // Adicionar ao valor total
 
             // Exibir produto com layout estilizado
-            echo "<div class='produto-item'>";
+            echo "<div class='produto-item' style='position: relative; padding: 15px; border: 1px solid #ddd; margin-bottom: 10px;'>";
             echo "<div class='produto-imagem'>";
             if ($produto['imagem']) {
                 echo "<img src='/cardapio-dinamico/admin/uploads/produtos/" . htmlspecialchars($produto['imagem']) . "' alt='" . htmlspecialchars($produto['nome']) . "'>";
@@ -113,7 +113,10 @@ if (empty($_SESSION['carrinho'])) {
             echo "<p>Quantidade: " . $quantidade . "</p>";
             echo "<p>Preço Unitário: R$ " . number_format($produto['preco'], 2, ',', '.') . "</p>";
             echo "<p>Subtotal: R$ " . number_format($subtotal, 2, ',', '.') . "</p>";
-            echo "<a href='?remove_id=" . $produto_id . "' class='remover-produto' title='Remover'>✖</a>"; // Ícone de remover
+
+            // Ícone de remover produto, movido para o canto superior direito e em vermelho
+            echo "<a href='?remove_id=" . $produto_id . "' class='remover-produto' title='Remover' style='position: absolute; top: 10px; right: 10px; color: #ff0000; font-size: 18px; font-weight: bold; text-decoration: none;'>✖</a>";
+
             echo "</div>";
             echo "</div>";
         }
