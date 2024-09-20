@@ -35,11 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
         $stmt->bindParam(':produto_id', $produto_id);
         $stmt->bindParam(':quantidade', $quantidade);
         $stmt->execute();
+
+        // Recuperar o nome do produto
+        $stmt_nome = $pdo->prepare("SELECT nome FROM produtos WHERE id = :id");
+        $stmt_nome->bindParam(':id', $produto_id);
+        $stmt_nome->execute();
+        $produto = $stmt_nome->fetch(PDO::FETCH_ASSOC);
+
+        if ($produto) {
+            echo "Produto " . htmlspecialchars($produto['nome']) . " foi adicionado ao carrinho com quantidade: $quantidade.<br>";
+        } else {
+            echo "Produto não encontrado.";
+        }
     } catch (PDOException $e) {
         echo "Erro ao adicionar produto ao carrinho: " . $e->getMessage();
     }
-
-    echo "Produto ID: $produto_id foi adicionado ao carrinho com quantidade: $quantidade.<br>";
 }
 
 // Remover produto do carrinho
