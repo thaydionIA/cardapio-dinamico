@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `cardapio_dinamico` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `cardapio_dinamico`;
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cardapio_dinamico
 -- ------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE `carrinho_compras` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `carrinho_compras` (
 
 LOCK TABLES `carrinho_compras` WRITE;
 /*!40000 ALTER TABLE `carrinho_compras` DISABLE KEYS */;
-INSERT INTO `carrinho_compras` VALUES (1,2,26,2,'2024-09-20 15:50:29');
+INSERT INTO `carrinho_compras` VALUES (1,2,26,2,'2024-09-20 15:50:29'),(2,2,21,1,'2024-09-20 16:10:56'),(3,2,4,3,'2024-09-20 16:24:29');
 /*!40000 ALTER TABLE `carrinho_compras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,4 +241,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-20 12:53:58
+-- Dump completed on 2024-09-20 13:36:10

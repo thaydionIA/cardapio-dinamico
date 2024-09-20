@@ -1,10 +1,12 @@
 <?php
 session_start();
 require_once 'db/conexao.php'; // Ajuste o caminho conforme necessário
+require_once 'header.php'; // Inclui o cabeçalho
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['user_id'])) {
     echo "<h1>Você precisa estar logado para ver o carrinho.</h1>";
+    require_once 'footer.php'; // Inclui o rodapé
     exit; // Sai se não estiver logado
 }
 
@@ -89,4 +91,6 @@ if (empty($_SESSION['carrinho'])) {
     // Exibir o valor total da compra
     echo "<h2>Valor Total da Compra: R$ " . number_format($valor_total, 2, ',', '.') . "</h2>";
 }
+
+require_once 'footer.php'; // Inclui o rodapé
 ?>
