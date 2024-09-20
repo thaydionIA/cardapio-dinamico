@@ -33,7 +33,7 @@ include 'config.php';
         
         </div> 
         <nav>
-        <div class="cart-icon" onclick="window.location.href='carrinho.php'">
+        <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
         <i class="fas fa-shopping-cart"></i></div> 
             <ul>
                 <?php foreach ($sections as $id => $section): ?>

@@ -66,8 +66,8 @@
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
     </div>
-    <div class="cart-icon" onclick="window.location.href='carrinho.php'">
-            <i class="fas fa-shopping-cart"></i>
+    <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
+    <i class="fas fa-shopping-cart"></i>
         </div>
 
     <nav>
