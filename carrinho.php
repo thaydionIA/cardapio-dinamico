@@ -2,6 +2,12 @@
 session_start();
 require_once 'db/conexao.php'; // Ajuste o caminho conforme necessário
 
+// Verifica se o usuário está logado
+if (!isset($_SESSION['user_id'])) {
+    echo "<h1>Você precisa estar logado para ver o carrinho.</h1>";
+    exit; // Sai se não estiver logado
+}
+
 // Adicionar produto ao carrinho
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isset($_POST['quantidade'])) {
     $produto_id = $_POST['produto_id'];
@@ -17,6 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
         $_SESSION['carrinho'][$produto_id] += $quantidade;
     } else {
         $_SESSION['carrinho'][$produto_id] = $quantidade;
+    }
+
+    // Salvar no banco de dados
+    $usuario_id = $_SESSION['user_id'];
+    try {
+        $stmt = $pdo->prepare("INSERT INTO carrinho_compras (usuario_id, produto_id, quantidade) VALUES (:usuario_id, :produto_id, :quantidade)");
+        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':produto_id', $produto_id);
+        $stmt->bindParam(':quantidade', $quantidade);
+        $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Erro ao adicionar produto ao carrinho: " . $e->getMessage();
     }
 
     echo "Produto ID: $produto_id foi adicionado ao carrinho com quantidade: $quantidade.<br>";
@@ -56,5 +74,3 @@ if (empty($_SESSION['carrinho'])) {
     echo "<h2>Valor Total da Compra: R$ " . number_format($valor_total, 2, ',', '.') . "</h2>";
 }
 ?>
-
-
