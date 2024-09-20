@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
     exit; // Sai se não estiver logado
 }
 
-// Inicializar o carrinho na sessão
+// Inicializar o carrinho na sessão, se não estiver já inicializado
 if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
@@ -20,21 +20,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
     $produto_id = $_POST['produto_id'];
     $quantidade = (int)$_POST['quantidade'];
 
-    // Adicionar ou atualizar a quantidade do produto no carrinho
+    // Atualizar a quantidade do produto no carrinho
     if (array_key_exists($produto_id, $_SESSION['carrinho'])) {
         $_SESSION['carrinho'][$produto_id] += $quantidade;
     } else {
         $_SESSION['carrinho'][$produto_id] = $quantidade;
     }
 
-    // Salvar no banco de dados
+    // Salvar ou atualizar no banco de dados
     $usuario_id = $_SESSION['user_id'];
     try {
-        $stmt = $pdo->prepare("INSERT INTO carrinho_compras (usuario_id, produto_id, quantidade) VALUES (:usuario_id, :produto_id, :quantidade)");
+        // Verifica se o produto já está no banco para atualizar a quantidade
+        $stmt = $pdo->prepare("SELECT quantidade FROM carrinho_compras WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
         $stmt->bindParam(':usuario_id', $usuario_id);
         $stmt->bindParam(':produto_id', $produto_id);
-        $stmt->bindParam(':quantidade', $quantidade);
         $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultado) {
+            // Atualizar a quantidade no banco de dados
+            $nova_quantidade = $resultado['quantidade'] + $quantidade;
+            $stmt_update = $pdo->prepare("UPDATE carrinho_compras SET quantidade = :quantidade WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
+            $stmt_update->bindParam(':quantidade', $nova_quantidade);
+            $stmt_update->bindParam(':usuario_id', $usuario_id);
+            $stmt_update->bindParam(':produto_id', $produto_id);
+            $stmt_update->execute();
+        } else {
+            // Inserir novo produto no carrinho do banco de dados
+            $stmt_insert = $pdo->prepare("INSERT INTO carrinho_compras (usuario_id, produto_id, quantidade) VALUES (:usuario_id, :produto_id, :quantidade)");
+            $stmt_insert->bindParam(':usuario_id', $usuario_id);
+            $stmt_insert->bindParam(':produto_id', $produto_id);
+            $stmt_insert->bindParam(':quantidade', $quantidade);
+            $stmt_insert->execute();
+        }
 
         // Recuperar o nome do produto
         $stmt_nome = $pdo->prepare("SELECT nome FROM produtos WHERE id = :id");
@@ -124,7 +142,7 @@ if (empty($_SESSION['carrinho'])) {
             echo "<p>Preço Unitário: R$ " . number_format($produto['preco'], 2, ',', '.') . "</p>";
             echo "<p>Subtotal: R$ " . number_format($subtotal, 2, ',', '.') . "</p>";
 
-            // Ícone de remover produto, movido para o canto superior direito e em vermelho
+            // Ícone de remover produto
             echo "<a href='?remove_id=" . $produto_id . "' class='remover-produto' title='Remover' style='position: absolute; top: 10px; right: 10px; color: #ff0000; font-size: 18px; font-weight: bold; text-decoration: none;'>✖</a>";
 
             echo "</div>";
