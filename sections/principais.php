@@ -23,7 +23,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratos Principais</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>"> <!-- Cache busting para carregar a versão mais recente do CSS -->
 </head>
 <body>
     <h1>Pratos Principais</h1>
@@ -40,16 +40,20 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h3><?php echo htmlspecialchars($produto['nome']); ?></h3>
                 <p><?php echo htmlspecialchars($produto['descricao']); ?></p>
                 <p class="preco">Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                
                 <!-- Formulário para adicionar ao carrinho -->
                 <form action="/cardapio-dinamico/carrinho.php" method="POST">
                     <input type="hidden" name="produto_id" value="<?php echo $produto['id']; ?>">
-                    
-                    <!-- Campo de quantidade -->
-                    <label for="quantidade">Quantidade:</label>
-                    <input type="number" name="quantidade" value="1" min="1" required>
-                    
-                    <!-- Botão de adicionar ao carrinho -->
-                    <button type="submit">Adicionar ao Carrinho</button>
+
+                    <!-- Campo de quantidade com ícones de aumentar e diminuir -->
+                    <div class="quantidade-container">
+                        <button type="button" class="quantidade-btn diminuir">-</button>
+                        <input type="number" name="quantidade" value="1" min="1" required class="quantidade-input">
+                        <button type="button" class="quantidade-btn aumentar">+</button>
+                    </div>
+
+                    <!-- Botão de adicionar ao carrinho com a classe CSS -->
+                    <button type="submit" class="adicionar-carrinho-btn">Adicionar ao Carrinho</button>
                 </form>
             </div>
         </div>
@@ -60,5 +64,24 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php if ($incluir_rodape): ?>
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; ?>
     <?php endif; ?>
+
+    <!-- Coloque o JavaScript aqui, antes do fechamento da tag body -->
+    <script>
+        document.querySelectorAll('.aumentar').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentNode.querySelector('.quantidade-input');
+                input.value = parseInt(input.value) + 1;
+            });
+        });
+
+        document.querySelectorAll('.diminuir').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentNode.querySelector('.quantidade-input');
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
