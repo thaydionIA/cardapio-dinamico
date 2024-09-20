@@ -8,15 +8,15 @@ if (!isset($_SESSION['user_id'])) {
     exit; // Sai se não estiver logado
 }
 
+// Inicializar o carrinho na sessão
+if (!isset($_SESSION['carrinho'])) {
+    $_SESSION['carrinho'] = [];
+}
+
 // Adicionar produto ao carrinho
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isset($_POST['quantidade'])) {
     $produto_id = $_POST['produto_id'];
     $quantidade = (int)$_POST['quantidade'];
-
-    // Inicializar o carrinho se não existir
-    if (!isset($_SESSION['carrinho'])) {
-        $_SESSION['carrinho'] = [];
-    }
 
     // Adicionar ou atualizar a quantidade do produto no carrinho
     if (array_key_exists($produto_id, $_SESSION['carrinho'])) {
@@ -38,6 +38,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
     }
 
     echo "Produto ID: $produto_id foi adicionado ao carrinho com quantidade: $quantidade.<br>";
+}
+
+// Buscar produtos do carrinho no banco de dados
+$usuario_id = $_SESSION['user_id'];
+try {
+    $stmt = $pdo->prepare("SELECT produto_id, quantidade FROM carrinho_compras WHERE usuario_id = :usuario_id");
+    $stmt->bindParam(':usuario_id', $usuario_id);
+    $stmt->execute();
+    $carrinho_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Preenche a variável de sessão com os dados do banco
+    foreach ($carrinho_db as $item) {
+        $_SESSION['carrinho'][$item['produto_id']] = $item['quantidade'];
+    }
+} catch (PDOException $e) {
+    echo "Erro ao buscar produtos do carrinho: " . $e->getMessage();
 }
 
 // Verifica se o carrinho está vazio
