@@ -109,7 +109,7 @@ try {
 
 // Verifica se o carrinho está vazio
 if (empty($_SESSION['carrinho'])) {
-    echo "<h1>Carrinho Vazio</h1>";
+    echo "<h1>Carrinho Vazioooo</h1>";
     echo "<p>Você ainda não adicionou produtos ao carrinho.</p>";
 } else {
     echo "<h1>Produtos no Carrinho</h1>";
