@@ -64,14 +64,14 @@ if (empty($_SESSION['carrinho'])) {
     echo "<p>Você ainda não adicionou produtos ao carrinho.</p>";
 } else {
     echo "<h1>Produtos no Carrinho</h1>";
-    echo "<ul>";
+    echo "<div class='produtos-container'>"; // Início do container de produtos
 
     $valor_total = 0; // Inicializa o valor total
 
     // Loop através dos produtos no carrinho
     foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
         // Buscar as informações do produto usando o ID
-        $stmt = $pdo->prepare("SELECT nome, preco FROM produtos WHERE id = :id");
+        $stmt = $pdo->prepare("SELECT nome, preco, imagem FROM produtos WHERE id = :id");
         $stmt->bindParam(':id', $produto_id);
         $stmt->execute();
         $produto = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -80,13 +80,24 @@ if (empty($_SESSION['carrinho'])) {
             $subtotal = $produto['preco'] * $quantidade; // Calcular subtotal
             $valor_total += $subtotal; // Adicionar ao valor total
 
-            echo "<li>";
-            echo htmlspecialchars($produto['nome']) . " - Quantidade: " . $quantidade . " - Preço Unitário: R$ " . number_format($produto['preco'], 2, ',', '.') . " - Subtotal: R$ " . number_format($subtotal, 2, ',', '.');
-            echo "</li>";
+            // Exibir produto com layout estilizado
+            echo "<div class='produto-item'>";
+            echo "<div class='produto-imagem'>";
+            if ($produto['imagem']) {
+                echo "<img src='/cardapio-dinamico/admin/uploads/produtos/" . htmlspecialchars($produto['imagem']) . "' alt='" . htmlspecialchars($produto['nome']) . "'>";
+            }
+            echo "</div>";
+            echo "<div class='produto-info'>";
+            echo "<h3>" . htmlspecialchars($produto['nome']) . "</h3>";
+            echo "<p>Quantidade: " . $quantidade . "</p>";
+            echo "<p>Preço Unitário: R$ " . number_format($produto['preco'], 2, ',', '.') . "</p>";
+            echo "<p>Subtotal: R$ " . number_format($subtotal, 2, ',', '.') . "</p>";
+            echo "</div>";
+            echo "</div>";
         }
     }
 
-    echo "</ul>";
+    echo "</div>"; // Fim do container de produtos
 
     // Exibir o valor total da compra
     echo "<h2>Valor Total da Compra: R$ " . number_format($valor_total, 2, ',', '.') . "</h2>";
