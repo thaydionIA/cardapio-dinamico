@@ -3,15 +3,18 @@
 if (basename($_SERVER['PHP_SELF']) == 'index.php') {
     include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header-ad.php';
 }
-?>
-<?php
-session_start();
+
+// Iniciar a sessão se ainda não estiver ativa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
 
-echo "Bem-vindo, " . $_SESSION['usuario']['nome'];
+echo "Bem-vindo, " . htmlspecialchars($_SESSION['usuario']['nome']);
 ?>
 
 <!DOCTYPE html>
@@ -35,4 +38,3 @@ echo "Bem-vindo, " . $_SESSION['usuario']['nome'];
 // Corrigir o caminho para o footer.php usando um caminho absoluto
 include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer-ad.php'; 
 ?>
-

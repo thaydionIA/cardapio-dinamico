@@ -17,7 +17,10 @@ if (isset($_GET['id'])) {
     $produto = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($produto && $produto['imagem']) {
-        unlink('uploads/produtos/' . $produto['imagem']);
+        $imagemPath = 'uploads/produtos/' . $produto['imagem'];
+        if (file_exists($imagemPath)) {
+            unlink($imagemPath);
+        }
     }
 
     // Agora, remover o produto do banco de dados

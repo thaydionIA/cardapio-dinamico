@@ -3,16 +3,20 @@
 if (basename($_SERVER['PHP_SELF']) == 'login.php') {
     include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header-ad.php';
 }
+
+// Iniciar a sessão se ainda não estiver ativa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <?php
-session_start();
 require_once '../db/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
-    $senha = md5($_POST['senha']);  // Você pode substituir por bcrypt para mais segurança
+    $senha = md5($_POST['senha']);  // Mantendo a forma original
 
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email AND senha = :senha");
+    $stmt = $pdo->prepare("SELECT * FROM usuarios_adm WHERE email = :email AND senha = :senha");
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':senha', $senha);
     $stmt->execute();
