@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once 'db/conexao.php'; // Ajuste o caminho conforme necessário
-require_once 'header.php'; // Inclui o cabeçalho
+include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
+
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['user_id'])) {

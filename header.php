@@ -73,7 +73,7 @@
         <i class="fas fa-shopping-cart"></i>
     </div>
 
-    <!-- Navegação do site -->
+    <!-- Navegação do sitffffe -->
     <nav>
         <ul>
             <?php foreach ($sections as $id => $section): ?>
