@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div>
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" class="input-field" placeholder="Ex: 62999999999" required>
+                <input type="text" id="telefone" name="telefone" class="input-field" placeholder="Ex: 999999999" required>
             </div>
             <div>
                 <label for="cpf">CPF:</label>
