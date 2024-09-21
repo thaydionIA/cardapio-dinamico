@@ -44,8 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Login</title>
     <!-- Cache busting com time() para garantir que o CSS mais recente seja carregado -->
     <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css?v=<?php echo time(); ?>"> <!-- Cache busting -->
-
-
 </head>
 <body>
 
@@ -68,6 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <button type="submit">Entrar</button>
+
+            <!-- Link de cadastro com o caminho correto -->
+            <p class="no-account">Não tem uma conta? <a href="/cardapio-dinamico/cadastro.php">Cadastre-se</a></p>
         </form>
     </div>
 </main>

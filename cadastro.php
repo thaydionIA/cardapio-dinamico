@@ -77,54 +77,80 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!-- Formulário de Cadastro -->
-<form action="cadastro.php" method="POST" enctype="multipart/form-data">
-    <h2>Cadastro de Usuário</h2>
-    <label>Nome:</label>
-    <input type="text" name="nome" required>
-    
-    <label>Email:</label>
-    <input type="email" name="email" required>
-    
-    <label>CPF:</label>
-    <input type="text" name="cpf" required>
-    
-    <label>Senha:</label>
-    <input type="password" name="senha" required>
-    
-    <label>DDD:</label>
-    <input type="text" name="dd" required>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css?v=<?php echo time(); ?>">
+</head>
+<body>
 
-    <label>Telefone:</label>
-    <input type="text" name="telefone">
+<header>
+    <h1>Nome do Site</h1>
+</header>
 
-    <label>Foto de Perfil:</label>
-    <input type="file" name="foto" accept="image/*">
-    
-    <h2>Endereço de Entrega</h2>
-    <label>Rua:</label>
-    <input type="text" name="rua" required>
+<main>
+    <div class="cadastro-container">
+        <h2>Cadastro de Usuário</h2>
+        <form action="cadastro.php" method="POST" enctype="multipart/form-data" class="cadastro-form">
+            <label>Nome:</label>
+            <input type="text" name="nome" required>
+            
+            <label>Email:</label>
+            <input type="email" name="email" required>
+            
+            <label>CPF:</label>
+            <input type="text" name="cpf" required>
+            
+            <label>Senha:</label>
+            <input type="password" name="senha" required>
+            
+            <label>DDD:</label>
+            <input type="text" name="dd" required>
 
-    <label>Número:</label>
-    <input type="text" name="numero" required>
+            <label>Telefone:</label>
+            <input type="text" name="telefone">
 
-    <label>Complemento:</label>
-    <input type="text" name="complemento">
+            <label>Foto de Perfil:</label>
+            <input type="file" name="foto" accept="image/*">
+            
+            <h2>Endereço de Entrega</h2>
+            
+            <label>Rua:</label>
+            <input type="text" name="rua" required>
 
-    <label>Bairro:</label>
-    <input type="text" name="bairro" required>
+            <label>Número:</label>
+            <input type="text" name="numero" required>
 
-    <label>Cidade:</label>
-    <input type="text" name="cidade" required>
+            <label>Complemento:</label>
+            <input type="text" name="complemento">
 
-    <label>Estado:</label>
-    <input type="text" name="estado" maxlength="2" required>
+            <label>Bairro:</label>
+            <input type="text" name="bairro" required>
 
-    <label>CEP:</label>
-    <input type="text" name="cep" required>
+            <label>Cidade:</label>
+            <input type="text" name="cidade" required>
 
-    <button type="submit">Cadastrar</button>
-</form>
+            <label>Estado:</label>
+            <input type="text" name="estado" maxlength="2" required>
 
-<!-- Link para a página de Login -->
-<p>Já tem uma conta? <a href="login.php">Faça login aqui</a></p>
+            <label>CEP:</label>
+            <input type="text" name="cep" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <!-- Link para a página de login -->
+        <p>Já tem uma conta? <a href="login.php">Faça login aqui</a></p>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Nome do Site. Todos os direitos reservados.</p>
+</footer>
+
+</body>
+</html>
+
+
