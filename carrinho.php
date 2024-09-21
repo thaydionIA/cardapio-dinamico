@@ -3,7 +3,6 @@ session_start();
 require_once 'db/conexao.php'; // Ajuste o caminho conforme necessário
 include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
 
-
 // Verifica se o usuário está logado
 if (!isset($_SESSION['user_id'])) {
     echo "<h1>Você precisa estar logado para ver o carrinho.</h1>";
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
     $usuario_id = $_SESSION['user_id'];
     try {
         // Verifica se o produto já está no banco para atualizar a quantidade
-        $stmt = $pdo->prepare("SELECT quantidade FROM carrinho_compras WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
+        $stmt = $pdo->prepare("SELECT quantidade FROM carrinho WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
         $stmt->bindParam(':usuario_id', $usuario_id);
         $stmt->bindParam(':produto_id', $produto_id);
         $stmt->execute();
@@ -41,14 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['produto_id']) && isse
         if ($resultado) {
             // Atualizar a quantidade no banco de dados
             $nova_quantidade = $resultado['quantidade'] + $quantidade;
-            $stmt_update = $pdo->prepare("UPDATE carrinho_compras SET quantidade = :quantidade WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
+            $stmt_update = $pdo->prepare("UPDATE carrinho SET quantidade = :quantidade WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
             $stmt_update->bindParam(':quantidade', $nova_quantidade);
             $stmt_update->bindParam(':usuario_id', $usuario_id);
             $stmt_update->bindParam(':produto_id', $produto_id);
             $stmt_update->execute();
         } else {
             // Inserir novo produto no carrinho do banco de dados
-            $stmt_insert = $pdo->prepare("INSERT INTO carrinho_compras (usuario_id, produto_id, quantidade) VALUES (:usuario_id, :produto_id, :quantidade)");
+            $stmt_insert = $pdo->prepare("INSERT INTO carrinho (usuario_id, produto_id, quantidade) VALUES (:usuario_id, :produto_id, :quantidade)");
             $stmt_insert->bindParam(':usuario_id', $usuario_id);
             $stmt_insert->bindParam(':produto_id', $produto_id);
             $stmt_insert->bindParam(':quantidade', $quantidade);
@@ -82,7 +81,7 @@ if (isset($_GET['remove_id'])) {
         // Remover do banco de dados
         $usuario_id = $_SESSION['user_id'];
         try {
-            $stmt = $pdo->prepare("DELETE FROM carrinho_compras WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
+            $stmt = $pdo->prepare("DELETE FROM carrinho WHERE usuario_id = :usuario_id AND produto_id = :produto_id");
             $stmt->bindParam(':usuario_id', $usuario_id);
             $stmt->bindParam(':produto_id', $remove_id);
             $stmt->execute();
@@ -95,7 +94,7 @@ if (isset($_GET['remove_id'])) {
 // Buscar produtos do carrinho no banco de dados
 $usuario_id = $_SESSION['user_id'];
 try {
-    $stmt = $pdo->prepare("SELECT produto_id, quantidade FROM carrinho_compras WHERE usuario_id = :usuario_id");
+    $stmt = $pdo->prepare("SELECT produto_id, quantidade FROM carrinho WHERE usuario_id = :usuario_id");
     $stmt->bindParam(':usuario_id', $usuario_id);
     $stmt->execute();
     $carrinho_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
