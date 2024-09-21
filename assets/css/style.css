@@ -288,3 +288,75 @@ input[type=number] {
 
 
 
+
+
+
+
+
+/* Estilos personalizados para a página de login */
+.login-container {
+    background-color: #1c1c1c; /* Usando a cor primária do header e footer */
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    color: #d4af37; /* Usando a cor dourada */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    color: #d4af37; /* Cor do texto do label */
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background-color: #444; /* Cor secundária de fundo */
+    color: #d4af37; /* Cor do texto */
+}
+
+.login-form button {
+    background-color: #d4af37; /* Botão com cor principal */
+    color: #1c1c1c; /* Texto do botão com a cor do fundo principal */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #ecbe54; /* Mudança de cor ao passar o mouse */
+}
+
+.login-container .error {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+        width: 100%;
+    }
+}
+

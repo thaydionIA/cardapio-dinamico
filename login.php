@@ -4,7 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-
 // Função para validar o login do cliente
 if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
     $email = $_POST['email'];
@@ -29,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: index.php'); // Redireciona para a página do painel ou outra desejada
             exit(); // Termina o script para evitar que o restante da página seja executado
         } else {
-            echo "Email ou senha incorretos.";
+            echo "<div class='error'>Email ou senha incorretos.</div>";
         }
     } catch (PDOException $e) {
         echo "Erro ao realizar o login: " . $e->getMessage();
@@ -37,13 +36,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-<!-- Formulário de Login -->
-<form action="login.php" method="POST">
-    <label>Email:</label>
-    <input type="email" name="email" required>
-    
-    <label>Senha:</label>
-    <input type="password" name="senha" required>
-    
-    <button type="submit">Entrar</button>
-</form>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Cache busting com time() para garantir que o CSS mais recente seja carregado -->
+    <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css?v=<?php echo time(); ?>"> <!-- Cache busting -->
+
+
+</head>
+<body>
+
+<header>
+    <h1>Bem-vindo ao Sistema</h1>
+</header>
+
+<main>
+    <div class="login-container">
+        <h2>Faça seu Login</h2>
+        <form action="login.php" method="POST" class="login-form">
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            
+            <div>
+                <label>Senha:</label>
+                <input type="password" name="senha" required>
+            </div>
+            
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Sistema de Login</p>
+</footer>
+
+</body>
+</html>
