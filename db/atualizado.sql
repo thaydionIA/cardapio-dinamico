@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `cardapio_dinamico` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `cardapio_dinamico`;
--- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cardapio_dinamico
 -- ------------------------------------------------------
@@ -18,32 +18,32 @@ USE `cardapio_dinamico`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `carrinho_compras`
+-- Table structure for table `carrinho`
 --
 
-DROP TABLE IF EXISTS `carrinho_compras`;
+DROP TABLE IF EXISTS `carrinho`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `carrinho_compras` (
+CREATE TABLE `carrinho` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario_id` int NOT NULL,
   `produto_id` int NOT NULL,
   `quantidade` int NOT NULL DEFAULT '1',
-  `adicionado_em` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `data_adicao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carrinho_compras`
+-- Dumping data for table `carrinho`
 --
 
-LOCK TABLES `carrinho_compras` WRITE;
-/*!40000 ALTER TABLE `carrinho_compras` DISABLE KEYS */;
-INSERT INTO `carrinho_compras` VALUES (1,2,26,2,'2024-09-20 15:50:29'),(2,2,21,1,'2024-09-20 16:10:56'),(3,2,4,3,'2024-09-20 16:24:29');
-/*!40000 ALTER TABLE `carrinho_compras` ENABLE KEYS */;
+LOCK TABLES `carrinho` WRITE;
+/*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
+INSERT INTO `carrinho` VALUES (1,2,21,12,'2024-09-21 03:15:23'),(2,2,22,2,'2024-09-21 03:24:44');
+/*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -173,7 +173,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'jose teste','jose@gmail.com','12345678909','$2y$10$sn4AaammqQ.hLnlpXNIqtuRaqCn/xWiX0hELtXyzMKo64aWItTGLy','991098685','62','Rua bv23 Q52 l7','D1.jpeg','2024-09-11 18:57:34'),(2,'Pedro','pedrcandidoenrique@gmail.com',NULL,'$2y$10$93kBEB5u75d8Fd8NHohxKuOXol0.p.4r9fSqZth1kScXijOFeJIxO','629957761',NULL,'','Captura de tela 2024-09-20 122933.png','2024-09-20 15:30:49');
+INSERT INTO `usuarios` VALUES (1,'jose teste','jose@gmail.com','12345678909','$2y$10$sn4AaammqQ.hLnlpXNIqtuRaqCn/xWiX0hELtXyzMKo64aWItTGLy','991098685','62','Rua bv23 Q52 l7','D1.jpeg','2024-09-11 18:57:34'),(2,'Pedro','pedro@gmail.com',NULL,'$2y$10$BpYTSiR0az4ZFsC.08S/b.Bkf34mDpjTBzDLFIzCPccYCyNy8Nz6O','629957761',NULL,'','P1.png','2024-09-21 03:20:48');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,4 +241,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-20 13:36:10
+-- Dump completed on 2024-09-21  0:25:46

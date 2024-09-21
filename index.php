@@ -1,6 +1,18 @@
 <?php
+session_start(); // Inicia a sessão
 $GLOBALS['incluir_rodape'] = false; // Define que o rodapé não deve ser incluído
-include 'config.php';
+
+// Verifica se o config.php existe antes de incluí-lo
+if (file_exists('config.php')) {
+    include 'config.php';
+} else {
+    echo 'Arquivo config.php não encontrado.';
+    exit; // Sai do script se o arquivo config.php não for encontrado
+}
+
+// Verifique se o usuário está na parte de admin
+$is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -26,6 +38,7 @@ include 'config.php';
 <body>
     <header>
         <div style="display: flex; align-items: center;">
+            <!-- Ajustado o caminho da logo para um caminho absoluto -->
             <img src="path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
             <h1><?php echo $site_name; ?></h1>
         </div>
@@ -49,29 +62,37 @@ include 'config.php';
     <?php 
     // Inclui as seções, mas ignora login e cadastro se o usuário não estiver logado
     foreach ($sections as $id => $section) {
-        // Pula as seções de login e cadastro no conteúdo se o usuário não estiver logado
         if (!isset($_SESSION['user_id']) && ($id === 'login' || $id === 'cadastro')) {
             continue; 
         }
         
-        // Se a seção for o perfil, verifique se o usuário está logado
         if ($id === 'perfil' && isset($_SESSION['user_id'])) {
             continue; // Não inclui a seção de perfil se o usuário estiver logado
         }
 
-        include $section['url'];
+        // Verifica se o arquivo da seção existe antes de incluí-lo, sem mostrar mensagem
+        if (file_exists($section['url'])) {
+            include $section['url'];
+        }
     }
     ?>
     </main>
 
     <footer>
         <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>
-        <li><a href="admin/login.php">Painel Administrativo</a></li>
+        <ul>
+            <li><a href="admin/login.php">Painel Administrativo</a></li>
+        </ul>
+        <?php 
+        // Inclui logout.php apenas na parte administrativa
+        if ($is_admin && file_exists('admin/logout.php')) {
+            include 'admin/logout.php';
+        }
+        ?>
     </footer>
 
     <!-- Código JavaScript -->
     <script>
-        // Função para registrar os eventos dos botões de aumentar e diminuir
         function registrarEventosQuantidade() {
             document.querySelectorAll('.aumentar').forEach(button => {
                 button.addEventListener('click', function() {
@@ -90,7 +111,6 @@ include 'config.php';
             });
         }
 
-        // Remove todos os event listeners antes de registrar novos
         function removerEventosQuantidade() {
             document.querySelectorAll('.aumentar').forEach(button => {
                 const clone = button.cloneNode(true);
@@ -103,13 +123,11 @@ include 'config.php';
             });
         }
 
-        // Inicializa e garante que os eventos sejam registrados corretamente
         function initQuantidade() {
             removerEventosQuantidade();
             registrarEventosQuantidade();
         }
 
-        // Chama a função quando o DOM estiver carregado
         document.addEventListener('DOMContentLoaded', function() {
             initQuantidade();
         });
