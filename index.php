@@ -1,7 +1,6 @@
 <?php
 $GLOBALS['incluir_rodape'] = false; // Define que o rodapé não deve ser incluído
 include 'config.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -24,28 +23,25 @@ include 'config.php';
     </style>
 </head>
 
-<body> 
-    <header>  
+<body>
+    <header>
         <div style="display: flex; align-items: center;">
             <img src="path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
             <h1><?php echo $site_name; ?></h1>
         </div>
-        
-        </div> 
         <nav>
-        <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
-        <i class="fas fa-shopping-cart"></i></div> 
+            <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
             <ul>
                 <?php foreach ($sections as $id => $section): ?>
                     <li><a href="<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a></li>
                 <?php endforeach; ?>
-                
             </ul>
         </nav>
-        
     </header>
-     <!-- Adicione o código do banner aqui -->
-     <div class="banner">
+
+    <div class="banner">
         <img src="<?php echo $banner_image_path; ?>" alt="Banner" style="width:100%; height:auto;">
     </div>
 
@@ -53,14 +49,20 @@ include 'config.php';
     <?php 
     // Inclui as seções, mas ignora login e cadastro se o usuário não estiver logado
     foreach ($sections as $id => $section) {
+        // Pula as seções de login e cadastro no conteúdo se o usuário não estiver logado
         if (!isset($_SESSION['user_id']) && ($id === 'login' || $id === 'cadastro')) {
-            continue; // Pula as seções de login e cadastro no conteúdo
+            continue; 
         }
-        include $section['url'];
-    } 
-    ?>
-</main>
+        
+        // Se a seção for o perfil, verifique se o usuário está logado
+        if ($id === 'perfil' && isset($_SESSION['user_id'])) {
+            continue; // Não inclui a seção de perfil se o usuário estiver logado
+        }
 
+        include $section['url'];
+    }
+    ?>
+    </main>
 
     <footer>
         <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>
@@ -68,51 +70,49 @@ include 'config.php';
     </footer>
 
     <!-- Código JavaScript -->
-<script>
-    // Função para registrar os eventos dos botões de aumentar e diminuir
-    function registrarEventosQuantidade() {
-        document.querySelectorAll('.aumentar').forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.parentNode.querySelector('.quantidade-input');
-                // Garante que a quantidade seja incrementada corretamente de 1 em 1
-                input.value = parseInt(input.value) + 1;
+    <script>
+        // Função para registrar os eventos dos botões de aumentar e diminuir
+        function registrarEventosQuantidade() {
+            document.querySelectorAll('.aumentar').forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentNode.querySelector('.quantidade-input');
+                    input.value = parseInt(input.value) + 1;
+                });
             });
-        });
 
-        document.querySelectorAll('.diminuir').forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.parentNode.querySelector('.quantidade-input');
-                if (parseInt(input.value) > 1) {
-                    input.value = parseInt(input.value) - 1;
-                }
+            document.querySelectorAll('.diminuir').forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentNode.querySelector('.quantidade-input');
+                    if (parseInt(input.value) > 1) {
+                        input.value = parseInt(input.value) - 1;
+                    }
+                });
             });
+        }
+
+        // Remove todos os event listeners antes de registrar novos
+        function removerEventosQuantidade() {
+            document.querySelectorAll('.aumentar').forEach(button => {
+                const clone = button.cloneNode(true);
+                button.parentNode.replaceChild(clone, button);
+            });
+
+            document.querySelectorAll('.diminuir').forEach(button => {
+                const clone = button.cloneNode(true);
+                button.parentNode.replaceChild(clone, button);
+            });
+        }
+
+        // Inicializa e garante que os eventos sejam registrados corretamente
+        function initQuantidade() {
+            removerEventosQuantidade();
+            registrarEventosQuantidade();
+        }
+
+        // Chama a função quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuantidade();
         });
-    }
-
-    // Remove todos os event listeners antes de registrar novos
-    function removerEventosQuantidade() {
-        document.querySelectorAll('.aumentar').forEach(button => {
-            const clone = button.cloneNode(true);
-            button.parentNode.replaceChild(clone, button);
-        });
-
-        document.querySelectorAll('.diminuir').forEach(button => {
-            const clone = button.cloneNode(true);
-            button.parentNode.replaceChild(clone, button);
-        });
-    }
-
-    // Inicializa e garante que os eventos sejam registrados corretamente
-    function initQuantidade() {
-        removerEventosQuantidade();
-        registrarEventosQuantidade();
-    }
-
-    // Chama a função quando o DOM estiver carregado
-    document.addEventListener('DOMContentLoaded', function() {
-        initQuantidade();
-    });
-</script>
-
+    </script>
 </body>
 </html>
