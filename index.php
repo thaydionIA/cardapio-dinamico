@@ -38,8 +38,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 <body>
     <header>
         <div style="display: flex; align-items: center;">
-            <!-- Ajustado o caminho da logo para um caminho absoluto -->
-            <img src="path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
+            <img src="assets/img/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
             <h1><?php echo $site_name; ?></h1>
         </div>
         <nav>
@@ -74,9 +73,13 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         if (file_exists($section['url'])) {
             include $section['url'];
         }
+
+
     }
     ?>
     </main>
+
+    
 
     <footer>
         <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>

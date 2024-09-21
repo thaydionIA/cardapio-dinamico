@@ -1,5 +1,6 @@
 <?php
 include('db/conexao.php'); // Inclui a conexão com o banco de dados via PDO
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -23,15 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nome'] = $user['nome'];
 
-            // Exibe mensagem de sucesso e redireciona o usuário
-            echo "Login realizado com sucesso!";
-            header('Location: index.php'); // Redireciona para a página do painel ou outra desejada
+            // Redireciona o usuário para a página inicial
+            header('Location: index.php'); 
             exit(); // Termina o script para evitar que o restante da página seja executado
         } else {
+            // Caso o login falhe, exibe mensagem de erro
             echo "<div class='error'>Email ou senha incorretos.</div>";
         }
     } catch (PDOException $e) {
-        echo "Erro ao realizar o login: " . $e->getMessage();
+        echo "<div class='error'>Erro ao realizar o login: " . $e->getMessage() . "</div>";
     }
 }
 ?>
