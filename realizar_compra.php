@@ -28,15 +28,14 @@ foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
     $forma_pagamento = $_POST['forma_pagamento'];
 
-    if ($forma_pagamento === 'pix') {
-        // Redirecionar para a API de pagamento via PIX
-        $url_pix_api = 'https://sua-api-pix.com?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']);
-        header("Location: $url_pix_api");
-        exit;
-    } elseif ($forma_pagamento === 'credito') {
-        // Redirecionar para a API de pagamento via Cartão de Crédito
-        $url_credito_api = 'https://sua-api-credito.com?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']);
-        header("Location: $url_credito_api");
+    // URL base da sua API
+    $url_api = '/cardapio-dinamico/API-cred_PagSeguro/views/index.php';
+    
+    // Redireciona para o index.php da API com os dados de pagamento
+    if ($forma_pagamento === 'pix' || $forma_pagamento === 'credito') {
+        // Redirecionar para a API passando os parâmetros necessários (forma de pagamento, valor total e user_id)
+        $url_pagamento = $url_api . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
+        header("Location: $url_pagamento");
         exit;
     } else {
         echo "<h1>Forma de pagamento inválida. Por favor, selecione uma opção válida.</h1>";
