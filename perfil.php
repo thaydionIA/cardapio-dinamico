@@ -1,6 +1,5 @@
 <?php
-// Iniciar a sessão e incluir a conexão com o banco de dados
-include('db/conexao.php');
+include('db/conexao.php'); // Inclui a conexão com o banco de dados via PDO
 session_start();
 
 // Verifica se o usuário está logado
@@ -26,7 +25,7 @@ $stmt_endereco->execute();
 $endereco = $stmt_endereco->fetch(PDO::FETCH_ASSOC);
 
 // Atualiza os dados do perfil
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
     $cpf = $_POST['cpf'];
@@ -44,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         move_uploaded_file($_FILES['foto']['tmp_name'], $target_file);
     }
 
-    // Atualiza a senha apenas se as duas senhas forem iguais
-    if ($nova_senha === $confirmar_senha) {
+    // Atualiza a senha apenas se uma nova senha for inserida e as duas senhas coincidirem
+    if (!empty($nova_senha) && $nova_senha === $confirmar_senha) {
+        // Atualiza a senha para a nova senha
         $senha = password_hash($nova_senha, PASSWORD_BCRYPT);
     } else {
-        echo "As senhas não coincidem.";
-        exit();
+        // Se a senha não for alterada, mantém a senha existente no banco de dados
+        $senha = $user['senha'];
     }
 
     // Atualiza os dados no banco de dados
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':dd', $dd);
-    $stmt->bindParam(':senha', $senha);
+    $stmt->bindParam(':senha', $senha); // Usa a senha existente ou a nova senha, se inserida
     $stmt->bindParam(':foto', $foto);
     $stmt->bindParam(':id', $user_id);
 
@@ -71,6 +71,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     } else {
         echo "Erro ao atualizar o perfil.";
+    }
+}
+
+// Processar a exclusão do perfil
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['excluir_perfil'])) {
+    // Exclui o usuário do banco de dados
+    $sql = "DELETE FROM usuarios WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $user_id);
+    if ($stmt->execute()) {
+        // Destrói a sessão e redireciona o usuário para a página de login
+        session_destroy();
+        header('Location: login.php');
+        exit();
+    } else {
+        echo "Erro ao excluir o perfil.";
     }
 }
 ?>
@@ -90,7 +106,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
     <!-- Ligando o arquivo CSS correto -->
-    <link rel="stylesheet" href="assets/css/style.css"> <!-- Caminho do CSS -->
+    <link rel="stylesheet" href="assets/css/style.css"> <!-- Caminho atualizado para o CSS -->
 </head>
 <body>
     <div class="perfil-container">
@@ -145,7 +161,12 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
             <label>Foto de Perfil:</label>
             <input type="file" name="foto" accept="image/*">
             
-            <button type="submit">Atualizar Perfil</button>
+            <button type="submit" name="atualizar_perfil">Atualizar Perfil</button>
+        </form>
+
+        <!-- Botão para excluir o perfil -->
+        <form action="perfil.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir seu perfil?');">
+            <button type="submit" name="excluir_perfil" class="btn-excluir">Excluir Perfil</button>
         </form>
     </div>
 

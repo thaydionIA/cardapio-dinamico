@@ -517,3 +517,25 @@ input[type=number] {
         height: 80px;
     }
 }
+
+/* Estilo do botão de excluir perfil */
+.btn-excluir {
+    background-color: #ff4d4d; /* Cor vermelha para chamar a atenção */
+    color: white; /* Texto branco */
+    padding: 10px 20px; /* Espaçamento interno */
+    border: none; /* Remove bordas */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    font-weight: bold; /* Texto em negrito */
+    cursor: pointer; /* Cursor tipo pointer */
+    transition: background-color 0.3s ease; /* Transição suave no hover */
+    margin-top: 20px; /* Espaço acima do botão */
+    display: block;
+    width: 100%; /* Ocupa toda a largura */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Efeito de hover no botão */
+.btn-excluir:hover {
+    background-color: #e60000; /* Cor mais escura no hover */
+}
