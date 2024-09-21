@@ -30,26 +30,4 @@ $sections = [
     ],
 ];
 
-// Verifica se o usuário está logado e adiciona o link de "Meu Perfil"
-if (isset($_SESSION['user_id'])) {
-    $user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : 'Usuário';
-    $sections['perfil'] = [
-        "title" => "Meu Perfil",
-        "url" => "perfil.php"
-    ];
-    $sections['logout'] = [
-        "title" => "Sair (" . htmlspecialchars($user_email) . ")",
-        "url" => "login.php"
-    ];
-} else {
-    // Se o usuário não estiver logado, exibe as opções de Login e Cadastro
-    $sections['login'] = [
-        "title" => "Login",
-        "url" => "login.php"
-    ];
-    $sections['cadastro'] = [
-        "title" => "Cadastrar",
-        "url" => "cadastro.php"
-    ];
-}
-?>
+

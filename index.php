@@ -49,6 +49,15 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
                 <?php foreach ($sections as $id => $section): ?>
                     <li><a href="<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a></li>
                 <?php endforeach; ?>
+                
+                <!-- Links para Login e Cadastro -->
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="cadastro.php">Cadastrar</a></li>
+                <?php else: ?>
+                    <li><a href="perfil.php">Meu Perfil</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
@@ -58,28 +67,47 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     </div>
 
     <main>
-    <?php 
-    // Inclui as seções, mas ignora login e cadastro se o usuário não estiver logado
-    foreach ($sections as $id => $section) {
-        if (!isset($_SESSION['user_id']) && ($id === 'login' || $id === 'cadastro')) {
-            continue; 
-        }
-        
-        if ($id === 'perfil' && isset($_SESSION['user_id'])) {
-            continue; // Não inclui a seção de perfil se o usuário estiver logado
-        }
+    <?php
+    // Verifica se o usuário está logado
+    if (isset($_SESSION['user_id'])) {
+        // Usuário logado - não mostra login ou cadastro
+        foreach ($sections as $id => $section) {
+            if ($id === 'login' || $id === 'cadastro') {
+                continue; // Pula a inclusão de login e cadastro
+            }
 
-        // Verifica se o arquivo da seção existe antes de incluí-lo, sem mostrar mensagem
-        if (file_exists($section['url'])) {
-            include $section['url'];
+            if ($id === 'perfil') {
+                continue; // Também pula a inclusão de perfil
+            }
+
+            // Inclui as demais seções
+            if (file_exists($section['url'])) {
+                include $section['url'];
+            }
         }
+    } else {
+        // Usuário não está logado - inclui todas as seções exceto perfil
+        foreach ($sections as $id => $section) {
+            if ($id === 'perfil') {
+                continue; // Pula a inclusão do perfil
 
+            }
 
+            if ($id === 'login' || $id === 'cadastro') {
+                // Exibe login e cadastro apenas quando o usuário não está logado
+                if (file_exists($section['url'])) {
+                    include $section['url'];
+                }
+            } else {
+                // Inclui todas as outras seções
+                if (file_exists($section['url'])) {
+                    include $section['url'];
+                }
+            }
+        }
     }
     ?>
     </main>
-
-    
 
     <footer>
         <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>
