@@ -102,16 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="email" name="email" required>
             
             <label>CPF:</label>
-            <input type="text" name="cpf" required>
+            <input type="text" name="cpf" maxlength="9" pattern="\d{9}" title="Digite exatamente 9 números" required>
             
             <label>Senha:</label>
             <input type="password" name="senha" required>
             
             <label>DDD:</label>
-            <input type="text" name="dd" required>
+            <input type="text" name="dd" maxlength="2" pattern="\d{2}" title="Digite exatamente 2 números" required>
 
             <label>Telefone:</label>
-            <input type="text" name="telefone">
+            <input type="text" name="telefone" maxlength="9" pattern="\d{9}" title="Digite exatamente 9 números" required>
 
             <label>Foto de Perfil:</label>
             <input type="file" name="foto" accept="image/*">
@@ -134,10 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" name="cidade" required>
 
             <label>Estado:</label>
-            <input type="text" name="estado" maxlength="2" required>
+            <input type="text" name="estado" maxlength="2" pattern="[A-Z]{2}" title="Digite exatamente 2 letras maiúsculas" required>
 
             <label>CEP:</label>
-            <input type="text" name="cep" required>
+            <input type="text" name="cep" maxlength="8" pattern="\d{8}" title="Digite exatamente 8 números" required>
 
             <button type="submit">Cadastrar</button>
         </form>
@@ -150,7 +150,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <p>&copy; 2024 Nome do Site. Todos os direitos reservados.</p>
 </footer>
 
+<!-- Script para bloquear caracteres não numéricos nos campos CPF, DDD, Telefone, CEP e permitir apenas maiúsculas em Estado -->
+<script>
+document.querySelector('input[name="cpf"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 9) {
+        this.value = this.value.slice(0, 9); // Limita a 9 dígitos
+    }
+});
+
+document.querySelector('input[name="dd"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 2) {
+        this.value = this.value.slice(0, 2); // Limita a 2 dígitos
+    }
+});
+
+document.querySelector('input[name="telefone"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 9) {
+        this.value = this.value.slice(0, 9); // Limita a 9 dígitos
+    }
+});
+
+document.querySelector('input[name="cep"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 8) {
+        this.value = this.value.slice(0, 8); // Limita a 8 dígitos
+    }
+});
+
+document.querySelector('input[name="estado"]').addEventListener('input', function (e) {
+    this.value = this.value.toUpperCase().replace(/[^A-Z]/g, ''); // Permite apenas letras maiúsculas
+    if (this.value.length > 2) {
+        this.value = this.value.slice(0, 2); // Limita a 2 letras
+    }
+});
+</script>
+
 </body>
 </html>
-
-
