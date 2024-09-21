@@ -98,7 +98,7 @@ if (empty($_SESSION['carrinho'])) {
     // Exibir o valor total da compra
     echo "<h2>Valor Total da Compra: R$ " . number_format($valor_total, 2, ',', '.') . "</h2>";
 
-    // Adicionar o botão de realizar a compra
+    // Adicionar o botão de realizar a compra que redireciona para realizar_compra.php
     echo "<form action='realizar_compra.php' method='post'>";
     echo "<button type='submit' style='background-color: #28a745; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer;'>Realizar Compra</button>";
     echo "</form>";
