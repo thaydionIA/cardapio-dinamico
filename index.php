@@ -38,7 +38,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 <body>
     <header>
         <div style="display: flex; align-items: center;">
-            <img src="assets/img/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
+            <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
             <h1><?php echo $site_name; ?></h1>
         </div>
         <nav>

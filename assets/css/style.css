@@ -430,3 +430,90 @@ input[type=number] {
 }
 
 
+
+
+
+/* Estilos personalizados para a página de perfil */
+.perfil-container {
+    background-color: #1c1c1c; /* Cor de fundo principal */
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+}
+
+.perfil-container h2 {
+    color: #d4af37; /* Cor dourada como destaque */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px; /* Tamanho da fonte ajustado */
+}
+
+.perfil-form label {
+    color: #d4af37; /* Cor dourada para o texto dos labels */
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.perfil-form input[type="text"],
+.perfil-form input[type="email"],
+.perfil-form input[type="password"],
+.perfil-form input[type="file"] {
+    width: 95%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background-color: #444; /* Cor secundária de fundo */
+    color: #d4af37; /* Cor do texto */
+}
+
+.perfil-form button {
+    background-color: #d4af37; /* Cor dourada para o botão */
+    color: #1c1c1c; /* Cor de fundo principal para o texto do botão */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.perfil-form button:hover {
+    background-color: #ecbe54; /* Mudança de cor no hover */
+}
+
+/* Estilo da foto de perfil (redimensionada) */
+.perfil-foto {
+    display: block;
+    margin: 0 auto 15px auto;
+    border-radius: 50%;
+    width: 100px; /* Redimensionado para uma versão menor */
+    height: 100px; /* Redimensionado para uma versão menor */
+    object-fit: cover; /* Mantém a proporção da imagem */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .perfil-container {
+        padding: 20px;
+        width: 100%;
+    }
+
+    .perfil-form input[type="text"],
+    .perfil-form input[type="email"],
+    .perfil-form input[type="password"],
+    .perfil-form input[type="file"] {
+        width: 100%;
+    }
+
+    .perfil-foto {
+        width: 80px; /* Ajuste menor para telas pequenas */
+        height: 80px;
+    }
+}
