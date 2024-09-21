@@ -4,29 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio - <?php echo $site_name; ?></title>
+    <title>Cardápio - <?php echo htmlspecialchars($site_name); ?></title>
     <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            color: <?php echo $text_color; ?>; 
+            color: <?php echo htmlspecialchars($text_color); ?>; 
         }
         header {
-            background-color: <?php echo $primary_color; ?>;
+            background-color: <?php echo htmlspecialchars($primary_color); ?>;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 10px;
         }
         .logo-container {
-           display: inline-block;
-           width: 100px; /* Ajuste a largura desejada */
-           height: 100px; /* Ajuste a altura desejada */
+            display: inline-block;
+            width: 100px; /* Ajuste a largura desejada */
+            height: 100px; /* Ajuste a altura desejada */
             overflow: hidden; /* Isso impede que o conteúdo exceda o tamanho do container */
         }
         .logo-container img {
-           width: 100%;
-           height: auto; /* Mantém a proporção da imagem ao ajustar a largura */
+            width: 100%;
+            height: auto; /* Mantém a proporção da imagem ao ajustar a largura */
         }
         .return-button-container {
             display: inline-block;
@@ -59,24 +59,32 @@
 <header>
     <!-- Espaço para a logo do cliente -->
     <div class="logo-container">
-        <img src="../path/logo.jpg" alt="Logo do Cliente" class="logo">
+        <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Cliente" class="logo">
     </div>
 
     <!-- Botão para retornar ao index principal -->
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
     </div>
+    
     <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
-    <i class="fas fa-shopping-cart"></i>
-        </div>
+        <i class="fas fa-shopping-cart"></i>
+    </div>
 
     <nav>
         <ul>
-            <?php foreach ($sections as $id => $section): ?>
-                <li><a href="/cardapio-dinamico/<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a></li>
-            <?php endforeach; ?>
+            <?php if (!empty($sections)): ?>
+                <?php foreach ($sections as $id => $section): ?>
+                    <li><a href="/cardapio-dinamico/<?php echo htmlspecialchars($section['url']); ?>"><?php echo htmlspecialchars($section['title']); ?></a></li>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </ul>
     </nav>
 </header>
 
 <main>
+    <!-- Conteúdo principal aqui -->
+</main>
+
+</body>
+</html>
