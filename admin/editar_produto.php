@@ -1,5 +1,9 @@
 <?php
-session_start();
+// Iniciar a sessão se ainda não estiver ativa
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
