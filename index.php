@@ -66,5 +66,53 @@ include 'config.php';
         <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>
         <li><a href="admin/login.php">Painel Administrativo</a></li>
     </footer>
+
+    <!-- Código JavaScript -->
+<script>
+    // Função para registrar os eventos dos botões de aumentar e diminuir
+    function registrarEventosQuantidade() {
+        document.querySelectorAll('.aumentar').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentNode.querySelector('.quantidade-input');
+                // Garante que a quantidade seja incrementada corretamente de 1 em 1
+                input.value = parseInt(input.value) + 1;
+            });
+        });
+
+        document.querySelectorAll('.diminuir').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.parentNode.querySelector('.quantidade-input');
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+    }
+
+    // Remove todos os event listeners antes de registrar novos
+    function removerEventosQuantidade() {
+        document.querySelectorAll('.aumentar').forEach(button => {
+            const clone = button.cloneNode(true);
+            button.parentNode.replaceChild(clone, button);
+        });
+
+        document.querySelectorAll('.diminuir').forEach(button => {
+            const clone = button.cloneNode(true);
+            button.parentNode.replaceChild(clone, button);
+        });
+    }
+
+    // Inicializa e garante que os eventos sejam registrados corretamente
+    function initQuantidade() {
+        removerEventosQuantidade();
+        registrarEventosQuantidade();
+    }
+
+    // Chama a função quando o DOM estiver carregado
+    document.addEventListener('DOMContentLoaded', function() {
+        initQuantidade();
+    });
+</script>
+
 </body>
 </html>
