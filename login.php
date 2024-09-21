@@ -7,30 +7,23 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $erro = ''; // Variável para armazenar a mensagem de erro
 
-// Função para validar o login do cliente
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
 
     try {
-        // Busca o usuário no banco de dados usando PDO
         $sql = "SELECT * FROM usuarios WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verifica se o usuário foi encontrado e se a senha está correta
         if ($user && password_verify($senha, $user['senha'])) {
-            // Define as variáveis de sessão
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nome'] = $user['nome'];
-
-            // Redireciona o usuário para a página inicial
-            header('Location: index.php'); 
-            exit(); // Termina o script para evitar que o restante da página seja executado
+            header('Location: index.php');
+            exit();
         } else {
-            // Caso o login falhe, armazena a mensagem de erro
             $erro = "Email ou senha incorretos.";
         }
     } catch (PDOException $e) {
@@ -45,8 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <!-- Cache busting com time() para garantir que o CSS mais recente seja carregado -->
-    <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css?v=<?php echo time(); ?>"> <!-- Cache busting -->
+    <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -58,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="login-container">
         <h2>Faça seu Login</h2>
 
-        <!-- Exibe a mensagem de erro, se houver -->
         <?php if ($erro): ?>
             <div class="error"><?php echo $erro; ?></div>
         <?php endif; ?>
@@ -76,8 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             <button type="submit">Entrar</button>
 
-            <!-- Link de cadastro com o caminho correto -->
             <p class="no-account">Não tem uma conta? <a href="/cardapio-dinamico/cadastro.php">Cadastre-se</a></p>
+
+            <!-- Link para a página de recuperação de senha -->
+            <p class="forgot-password"><a href="/cardapio-dinamico/esqueceu_senha.php">Esqueceu a senha?</a></p>
         </form>
     </div>
 </main>

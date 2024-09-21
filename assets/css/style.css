@@ -311,7 +311,8 @@ input[type=number] {
     margin-bottom: 10px;
     font-size: 14px;
 }
-
+.login-form input[type="text"],
+.login-form input[type="tel"],
 .login-form input[type="email"],
 .login-form input[type="password"] {
     width: 95%;
@@ -551,3 +552,4 @@ input[type=number] {
 .btn-excluir:hover {
     background-color: #e60000; /* Cor mais escura no hover */
 }
+
