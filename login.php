@@ -5,6 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+$erro = ''; // Variável para armazenar a mensagem de erro
+
 // Função para validar o login do cliente
 if ($_SERVER['REQUEST_METHOD'] == 'POST') { 
     $email = $_POST['email'];
@@ -28,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: index.php'); 
             exit(); // Termina o script para evitar que o restante da página seja executado
         } else {
-            // Caso o login falhe, exibe mensagem de erro
-            echo "<div class='error'>Email ou senha incorretos.</div>";
+            // Caso o login falhe, armazena a mensagem de erro
+            $erro = "Email ou senha incorretos.";
         }
     } catch (PDOException $e) {
-        echo "<div class='error'>Erro ao realizar o login: " . $e->getMessage() . "</div>";
+        $erro = "Erro ao realizar o login: " . $e->getMessage();
     }
 }
 ?>
@@ -55,6 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <main>
     <div class="login-container">
         <h2>Faça seu Login</h2>
+
+        <!-- Exibe a mensagem de erro, se houver -->
+        <?php if ($erro): ?>
+            <div class="error"><?php echo $erro; ?></div>
+        <?php endif; ?>
+
         <form action="login.php" method="POST" class="login-form">
             <div>
                 <label>Email:</label>

@@ -356,6 +356,18 @@ input[type=number] {
     }
 }
 
+/* Estilo para a mensagem de erro no login */
+.error {
+    color: #ff4d4d; /* Cor vermelha para a mensagem de erro */
+    background-color: #ffe5e5; /* Fundo suave para destacar a mensagem */
+    border: 1px solid #ff4d4d; /* Borda vermelha */
+    padding: 10px; /* Espaçamento interno */
+    margin-top: 10px; /* Espaçamento acima */
+    border-radius: 5px; /* Bordas arredondadas */
+    text-align: center; /* Centralizar o texto */
+    font-size: 14px; /* Tamanho da fonte */
+}
+
 
 
 
@@ -461,7 +473,7 @@ input[type=number] {
 .perfil-form input[type="email"],
 .perfil-form input[type="password"],
 .perfil-form input[type="file"] {
-    width: 95%;
+    width: 96.4%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
