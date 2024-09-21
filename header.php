@@ -59,17 +59,21 @@
 <header>
     <!-- Espaço para a logo do cliente -->
     <div class="logo-container">
-        <img src="../path/logo.jpg" alt="Logo do Cliente" class="logo">
+        <!-- Use um caminho absoluto para garantir que a logo seja exibida corretamente em todas as páginas -->
+        <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Cliente" class="logo">
     </div>
 
     <!-- Botão para retornar ao index principal -->
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
     </div>
-    <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
-    <i class="fas fa-shopping-cart"></i>
-        </div>
 
+    <!-- Ícone do carrinho de compras -->
+    <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+
+    <!-- Navegação do site -->
     <nav>
         <ul>
             <?php foreach ($sections as $id => $section): ?>
