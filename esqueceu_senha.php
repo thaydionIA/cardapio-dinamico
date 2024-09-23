@@ -65,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 
 <header>
+<div style="display: flex; align-items: center; position: relative; width: 100%;">
+    <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
+    <h1 style="position: absolute; left: 50%; transform: translateX(-50%); margin: 0;">Recuperar Senha</h1>
+</div>
     <h1>Recuperar Senha</h1>
 </header>
 
