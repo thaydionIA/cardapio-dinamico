@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!$user) {
             $erros[] = 'Campo Email não corresponde com os dados do cadastro.';
         }
-
         // Verifica se o telefone não corresponde, mesmo que o email não corresponda
         if (!$user || ($user && $user['telefone'] !== $telefone)) {
             $erros[] = 'Campo Telefone não corresponde com os dados do cadastro.';
