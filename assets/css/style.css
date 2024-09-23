@@ -313,6 +313,8 @@ input[type=number] {
 }
 
 .login-form input[type="email"],
+.login-form input[type="text"],
+.login-form input[type="number"],
 .login-form input[type="password"] {
     width: 95%;
     padding: 10px;
@@ -346,6 +348,17 @@ input[type=number] {
     text-align: center;
     margin-bottom: 15px;
     font-size: 14px;
+}
+.login-container .sucesso {
+    color: #2fed00; /* Define a cor do texto como verde */
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    background-color: white; /* Define o fundo da caixinha como branco */
+    border: 2px solid #2fed00; /* Define a borda verde */
+    padding: 10px; /* Adiciona espaçamento interno para melhor visualização */
+    border-radius: 5px; /* Arredonda as bordas da caixinha */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Adiciona uma leve sombra para destacar a caixinha */
 }
 
 /* Responsividade para telas menores */

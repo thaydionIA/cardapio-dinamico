@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $mensagem = '';
+$tipoMensagem = ''; // Variável para definir o tipo da mensagem (error ou sucesso)
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: esqueceu_senha.php'); // Redireciona de volta se o usuário não estiver autenticado
@@ -29,12 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute();
 
             $mensagem = "Senha redefinida com sucesso!";
+            $tipoMensagem = 'sucesso'; // Define o tipo da mensagem como sucesso
             session_destroy(); // Finaliza a sessão após redefinir a senha
         } catch (PDOException $e) {
             $mensagem = "Erro ao redefinir a senha: " . $e->getMessage();
+            $tipoMensagem = 'error'; // Define o tipo da mensagem como erro
         }
     } else {
         $mensagem = "As senhas não coincidem. Tente novamente.";
+        $tipoMensagem = 'error'; // Define o tipo da mensagem como erro
     }
 }
 ?>
@@ -58,10 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Insira sua nova senha</h2>
 
         <?php if ($mensagem): ?>
-            <div class="error"><?php echo $mensagem; ?></div>
+            <div class="<?php echo $tipoMensagem; ?>"><?php echo $mensagem; ?></div>
         <?php endif; ?>
 
-        <?php if (!empty($mensagem) && $mensagem == "Senha redefinida com sucesso!"): ?>
+        <?php if ($tipoMensagem === 'sucesso'): ?>
             <p><a href="login.php">Voltar para o login</a></p>
         <?php else: ?>
             <form action="redefinir_senha.php" method="POST" class="login-form">

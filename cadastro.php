@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="email" name="email" required>
             
             <label>CPF:</label>
-            <input type="text" name="cpf" maxlength="9" pattern="\d{9}" title="Digite exatamente 9 números" required>
+            <input type="text" name="cpf" maxlength="11" pattern="\d{11}" title="Digite exatamente 11 números" required>
             
             <label>Senha:</label>
             <input type="password" name="senha" required>
@@ -154,8 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
 document.querySelector('input[name="cpf"]').addEventListener('input', function (e) {
     this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (this.value.length > 9) {
-        this.value = this.value.slice(0, 9); // Limita a 9 dígitos
+    if (this.value.length > 11) {
+        this.value = this.value.slice(0, 11); // Limita a 11 dígitos
     }
 });
 

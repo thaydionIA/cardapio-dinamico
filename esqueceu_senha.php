@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $mensagem = '';
+$erros = []; // Array para armazenar os erros específicos dos campos
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Captura os campos para validação
@@ -14,22 +15,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cpf = trim($_POST['cpf']);
 
     try {
-        // Verifica se os dados fornecidos batem com os armazenados no banco de dados
-        $sql = "SELECT * FROM usuarios WHERE email = :email AND telefone = :telefone AND cpf = :cpf";
+        // Verifica se o email existe
+        $sql = "SELECT * FROM usuarios WHERE email = :email";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':telefone', $telefone);
-        $stmt->bindParam(':cpf', $cpf);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // Verifica se o email não corresponde
+        if (!$user) {
+            $erros[] = 'Campo Email não corresponde com os dados do cadastro.';
+        }
 
-        // Se os dados conferirem, permite redefinir a senha
-        if ($user) {
+        // Verifica se o telefone não corresponde, mesmo que o email não corresponda
+        if (!$user || ($user && $user['telefone'] !== $telefone)) {
+            $erros[] = 'Campo Telefone não corresponde com os dados do cadastro.';
+        }
+
+        // Verifica se o CPF não corresponde, mesmo que o email e o telefone não correspondam
+        if (!$user || ($user && $user['cpf'] !== $cpf)) {
+            $erros[] = 'Campo CPF não corresponde com os dados do cadastro.';
+        }
+
+        // Exibe mensagem única se todos os campos estiverem errados
+        if (count($erros) === 3) {
+            $mensagem = "Os dados informados não correspondem aos dados do cadastro.";
+        } else if (!empty($erros)) {
+            // Junta as mensagens de erro
+            $mensagem = implode('<br>', $erros);
+        } else {
+            // Se não houver erros, prossegue para redefinir a senha
             $_SESSION['user_id'] = $user['id'];
             header('Location: redefinir_senha.php'); // Redireciona para a página de redefinição
             exit();
-        } else {
-            $mensagem = "As informações não conferem. Tente novamente.";
         }
     } catch (PDOException $e) {
         $mensagem = "Erro ao processar a solicitação: " . $e->getMessage();
@@ -66,16 +84,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div>
                 <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" class="input-field" placeholder="Ex: 999999999" required>
+                <input type="text" id="telefone" name="telefone" maxlength="9" pattern="\d{9}" class="input-field" placeholder="Ex: 999999999" required>
             </div>
             <div>
                 <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" class="input-field" placeholder="Ex: 12345678909" required>
+                <input type="text" id="cpf" name="cpf" maxlength="11" pattern="\d{11}" class="input-field" placeholder="Ex: 12345678909" required>
             </div>
             <button type="submit">Verificar</button>
         </form>
     </div>
 </main>
+
+<script>
+document.querySelector('input[name="cpf"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 11) {
+        this.value = this.value.slice(0, 11); // Limita a 11 dígitos
+    }
+});
+document.querySelector('input[name="telefone"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 9) {
+        this.value = this.value.slice(0, 9); // Limita a 9 dígitos
+    }
+});
+</script>
 
 <footer>
     <p>&copy; 2024 Sistema de Login</p>
