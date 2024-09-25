@@ -29,12 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
     $forma_pagamento = $_POST['forma_pagamento'];
 
     // URL base da sua API
-    $url_api = '/cardapio-dinamico/API-cred_PagSeguro/views/index.php';
+    $url_api_pix = '/cardapio-dinamico/PIXPAGSEGURO/controllers/PaymentControllerPix.php'; // URL específica para o pagamento via PIX
+    $url_api_credito = '/cardapio-dinamico/API-cred_PagSeguro/views/index.php'; // URL para o pagamento via crédito
     
-    // Redireciona para o index.php da API com os dados de pagamento
-    if ($forma_pagamento === 'pix' || $forma_pagamento === 'credito') {
-        // Redirecionar para a API passando os parâmetros necessários (forma de pagamento, valor total e user_id)
-        $url_pagamento = $url_api . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
+    // Redireciona para a URL da API correspondente
+    if ($forma_pagamento === 'pix') {
+        // Redirecionar para o arquivo específico de pagamento via PIX
+        $url_pagamento = $url_api_pix . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
+        header("Location: $url_pagamento");
+        exit;
+    } elseif ($forma_pagamento === 'credito') {
+        // Redirecionar para o arquivo de pagamento com cartão de crédito
+        $url_pagamento = $url_api_credito . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
         header("Location: $url_pagamento");
         exit;
     } else {
@@ -42,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
         exit;
     }
 }
+
 
 ?>
 

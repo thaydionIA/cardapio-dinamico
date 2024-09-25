@@ -17,6 +17,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finalizar Compra</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+
+    <style>
+        /* Estilos personalizados para o formulário de pagamento */
+        body {
+            background-color: #1c1c1c; /* Fundo escuro */
+            font-family: Arial, sans-serif; /* Fonte padrão */
+            color: #d4af37; /* Texto dourado */
+        }
+
+        .container {
+            background-color: #333; /* Fundo escuro para o container */
+            padding: 30px; /* Espaçamento interno */
+            border-radius: 10px; /* Bordas arredondadas */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra leve */
+            max-width: 600px; /* Limita a largura do container */
+            margin: 50px auto; /* Centraliza o container */
+            color: #d4af37; /* Texto dourado */
+        }
+
+        /* Estilo dos campos de texto */
+        input[type="text"] {
+            width: 100%; /* Largura total do campo */
+            padding: 10px; /* Espaço interno */
+            margin-bottom: 15px; /* Espaço abaixo dos campos */
+            border: 1px solid #444; /* Borda sutil */
+            border-radius: 5px; /* Bordas arredondadas */
+            background-color: #222; /* Fundo escuro para o campo */
+            color: #d4af37; /* Texto dourado */
+        }
+
+        input[type="text"]::placeholder {
+            color: #999; /* Cor para o texto do placeholder */
+        }
+
+        /* Estilo do botão */
+        input[type="submit"] {
+            background-color: #d4af37; /* Cor dourada */
+            color: #1c1c1c; /* Texto escuro */
+            border: none; /* Sem borda */
+            padding: 12px 20px; /* Espaçamento interno */
+            font-size: 16px; /* Tamanho da fonte */
+            font-weight: bold; /* Negrito */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Muda o cursor para pointer */
+            width: 100%; /* Botão ocupa toda a largura */
+            transition: background-color 0.3s ease; /* Transição suave */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ecbe54; /* Dourado mais claro no hover */
+        }
+
+        /* Centralizar o conteúdo */
+        .col-6 {
+            margin: 0 auto; /* Centraliza o conteúdo da coluna */
+        }
+    </style>
+
 </head>
 <body>
 <form method="post" name="formCard" id="formCard" action="../controllers/PayController.php">
