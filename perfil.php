@@ -13,14 +13,14 @@ $user_id = $_SESSION['user_id'];
 // Obtém os dados do usuário
 $sql = "SELECT * FROM usuarios WHERE id = :id";
 $stmt = $pdo->prepare($sql);
-$stmt->bindParam(':id', $user_id);
+$stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Obtém o endereço de entrega
 $sql_endereco = "SELECT * FROM enderecos_entrega WHERE usuario_id = :usuario_id";
 $stmt_endereco = $pdo->prepare($sql_endereco);
-$stmt_endereco->bindParam(':usuario_id', $user_id);
+$stmt_endereco->bindParam(':usuario_id', $user_id, PDO::PARAM_INT);
 $stmt_endereco->execute();
 $endereco = $stmt_endereco->fetch(PDO::FETCH_ASSOC);
 
@@ -37,18 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
 
     // Se uma nova foto for enviada, processa o upload
     if (!empty($_FILES['foto']['name'])) {
-        $foto = $_FILES['foto']['name'];
+        $foto = basename($_FILES['foto']['name']);
         $target_dir = "uploads/clientes/";
-        $target_file = $target_dir . basename($foto);
+        $target_file = $target_dir . $foto;
         move_uploaded_file($_FILES['foto']['tmp_name'], $target_file);
     }
 
     // Atualiza a senha apenas se uma nova senha for inserida e as duas senhas coincidirem
     if (!empty($nova_senha) && $nova_senha === $confirmar_senha) {
-        // Atualiza a senha para a nova senha
         $senha = password_hash($nova_senha, PASSWORD_BCRYPT);
     } else {
-        // Se a senha não for alterada, mantém a senha existente no banco de dados
         $senha = $user['senha'];
     }
 
@@ -60,12 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
     $stmt->bindParam(':cpf', $cpf);
     $stmt->bindParam(':telefone', $telefone);
     $stmt->bindParam(':dd', $dd);
-    $stmt->bindParam(':senha', $senha); // Usa a senha existente ou a nova senha, se inserida
+    $stmt->bindParam(':senha', $senha);
     $stmt->bindParam(':foto', $foto);
-    $stmt->bindParam(':id', $user_id);
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        echo "Perfil atualizado com sucesso!";
         $_SESSION['user_nome'] = $nome;
         header('Location: perfil.php');
         exit();
@@ -76,12 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
 
 // Processar a exclusão do perfil
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['excluir_perfil'])) {
-    // Exclui o usuário do banco de dados
     $sql = "DELETE FROM usuarios WHERE id = :id";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id', $user_id);
+    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
     if ($stmt->execute()) {
-        // Destrói a sessão e redireciona o usuário para a página de login
         session_destroy();
         header('Location: login.php');
         exit();
@@ -89,10 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['excluir_perfil'])) {
         echo "Erro ao excluir o perfil.";
     }
 }
-?>
 
-<?php
-// Verificar se a variável global $incluir_rodape está definida e se deve incluir o rodapé
 $incluir_rodape = !isset($GLOBALS['incluir_rodape']) || $GLOBALS['incluir_rodape'];
 
 // Incluir o cabeçalho
@@ -105,14 +97,20 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
-    <!-- Ligando o arquivo CSS correto -->
-    <link rel="stylesheet" href="assets/css/style.css"> <!-- Caminho atualizado para o CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="perfil-container">
         <h2>Meu Perfil</h2>
         <form class="perfil-form" action="perfil.php" method="POST" enctype="multipart/form-data">
-            <img class="perfil-foto" src="uploads/clientes/<?= htmlspecialchars($user['foto']); ?>" alt="Foto de Perfil">
+            <div class="foto-container">
+                <label for="foto-upload" class="foto-label">
+                    <img class="perfil-foto" src="uploads/clientes/<?= htmlspecialchars($user['foto']); ?>" alt="Foto de Perfil">
+                    <input type="file" id="foto-upload" name="foto" accept="image/*" style="display: none;">
+                    <i class="fa-solid fa-camera icon-camera"></i> <!-- Ícone de câmera no canto inferior direito -->
+                </label>
+            </div>
             
             <label>Nome:</label>
             <input type="text" name="nome" value="<?= htmlspecialchars($user['nome']); ?>" required>
@@ -158,22 +156,16 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
             <label>Confirmar Senha:</label>
             <input type="password" name="confirmar_senha">
             
-            <label>Foto de Perfil:</label>
-            <input type="file" name="foto" accept="image/*">
-            
             <button type="submit" name="atualizar_perfil">Atualizar Perfil</button>
         </form>
 
-        <!-- Botão para excluir o perfil -->
         <form action="perfil.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir seu perfil?');">
             <button type="submit" name="excluir_perfil" class="btn-excluir">Excluir Perfil</button>
         </form>
     </div>
 
-    <!-- Inclusão do rodapé -->
     <?php if ($incluir_rodape): ?>
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; ?>
     <?php endif; ?>
-
 </body>
 </html>

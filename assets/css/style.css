@@ -701,3 +701,50 @@ input[type=number] {
         width: 100%; /* Botão ocupa 100% da largura em telas menores */
     }
 }
+/* Contêiner da foto de perfil */
+.foto-container {
+    position: relative;
+    width: 150px; /* Ajuste o tamanho conforme necessário */
+    height: 150px;
+    margin: 0 auto 15px; /* Centraliza o contêiner e adiciona margem inferior */
+}
+
+/* Label da foto de perfil, permitindo o clique para upload */
+.foto-label {
+    position: relative; /* Necessário para posicionamento absoluto do ícone */
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Estilização da imagem de perfil */
+.perfil-foto {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantém a proporção da imagem dentro do contêiner */
+    border-radius: 50%; /* Deixa a imagem redonda */
+}
+
+/* Estilização do ícone da câmera */
+.icon-camera {
+    position: absolute;
+    bottom: 0; /* Posiciona o ícone no canto inferior */
+    right: 0; /* Posiciona o ícone no canto direito */
+    font-size: 24px; /* Aumenta o tamanho do ícone */
+    color: #d4af37; /* Cor do ícone */
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semitransparente */
+    padding: 8px; /* Ajuste do padding para corresponder ao tamanho do ícone */
+    border-radius: 50%; /* Formato circular do ícone */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Efeito de transição ao passar o mouse */
+}
+
+.icon-camera:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Efeito de escurecimento ao passar o mouse */
+    transform: scale(1.1); /* Leve aumento de escala ao passar o mouse */
+}
