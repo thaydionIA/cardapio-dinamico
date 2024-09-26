@@ -171,134 +171,16 @@ $payController = new PayController($pdo, $productcontrollerpix, $usercontrollerp
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento com QR Code</title>
-    <style>
-        /* Estilo geral da página */
-        body {
-            background-color: #1c1c1c; /* Fundo escuro */
-            font-family: Arial, sans-serif;
-            color: #d4af37; /* Texto dourado */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Container para o conteúdo */
-        .container {
-            background-color: #333; /* Fundo escuro para o container */
-            padding: 30px; /* Espaçamento interno */
-            border-radius: 10px; /* Bordas arredondadas */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
-            text-align: center; /* Centralizar o conteúdo */
-            max-width: 600px; /* Largura máxima do container */
-            margin: auto;
-        }
-
-        /* Estilo do título */
-        h1 {
-            color: #d4af37; /* Cor dourada para o título */
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        /* Estilo da imagem do QR Code */
-        #qrcode img {
-            width: 250px; /* Tamanho fixo do QR Code */
-            height: 250px;
-            margin: 20px 0;
-            border-radius: 10px; /* Bordas arredondadas para a imagem */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra na imagem */
-        }
-
-        /* Caixa de texto para a chave Pix */
-        .pix-key-box {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .pix-key-input {
-            background-color: #222; /* Fundo escuro para a caixa de texto */
-            color: #d4af37; /* Texto dourado */
-            border: 1px solid #444; /* Borda sutil */
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-right: 10px;
-        }
-
-        /* Botão de copiar a chave Pix */
-        .copy-btn {
-            background-color: #d4af37; /* Fundo dourado */
-            color: #1c1c1c; /* Texto escuro */
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .copy-btn:hover {
-            background-color: #ecbe54; /* Cor mais clara ao passar o mouse */
-        }
-
-        /* Link para continuar após o pagamento */
-        .continue-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #d4af37; /* Fundo dourado */
-            color: #1c1c1c; /* Texto escuro */
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .continue-link:hover {
-            background-color: #ecbe54; /* Dourado mais claro no hover */
-        }
-
-        /* Mensagem de erro ao gerar o QR Code */
-        p.error-message {
-            color: #ff4d4d; /* Cor vermelha para mensagem de erro */
-            font-size: 18px;
-        }
-
-        /* Responsividade para telas menores */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px; /* Reduz o espaçamento para telas menores */
-                width: 90%;
-            }
-
-            #qrcode img {
-                width: 200px; /* Ajusta o tamanho do QR Code em telas menores */
-                height: 200px;
-            }
-
-            .pix-key-input {
-                font-size: 14px; /* Ajusta o tamanho da fonte da chave Pix */
-            }
-
-            .copy-btn {
-                font-size: 14px; /* Ajusta o tamanho do botão em telas menores */
-                padding: 8px 15px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="PIX.css">
 </head>
 <body>
     <div class="container">
         <h1>Pagamento com QR Code</h1>
         <?php $payController->createPayment(); ?>
+
+        <!-- Status de pagamento com animação e cronômetro -->
+        <p class="pix-status" id="pix-status">Aguardando pagamento via Pix...</p>
+        <p>Tempo restante para o pagamento: <span id="timer">10:00</span></p> <!-- Cronômetro -->
     </div>
 
     <script>
@@ -313,6 +195,63 @@ $payController = new PayController($pdo, $productcontrollerpix, $usercontrollerp
                 alert('Falha ao copiar a chave Pix: ' + error);
             });
         }
+
+        // Função para verificar o status do pagamento periodicamente
+        function checkPaymentStatus(referenceId) {
+            fetch('verificar_pagamento.php?reference_id=' + referenceId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'pago') {
+                        document.getElementById('pix-status').innerText = 'Pagamento Concluído';
+                        document.getElementById('pix-status').style.color = 'green';
+                        document.getElementById('pix-status').style.animation = 'none';
+                        setTimeout(function() {
+                            window.location.href = 'login.php';
+                        }, 2000); // Redireciona após 2 segundos
+                    }
+                })
+                .catch(error => console.error('Erro ao verificar pagamento:', error));
+        }
+
+        // Função para iniciar a contagem regressiva de 10 minutos
+        function startTimer(duration, display) {
+            var timer = duration, minutes, seconds;
+            var countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                display.textContent = minutes + ':' + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    document.getElementById('pix-status').innerText = 'Pagamento Expirado';
+                    document.getElementById('pix-status').style.color = 'red';
+                    document.getElementById('pix-status').style.animation = 'none';
+                }
+            }, 1000);
+        }
+
+        // Inicia a contagem regressiva e a verificação do pagamento
+        document.addEventListener('DOMContentLoaded', function () {
+            var tenMinutes = 60 * 10, // 10 minutos em segundos
+                display = document.querySelector('#timer'); // Seleciona o elemento do timer
+
+            if (display) {
+                startTimer(tenMinutes, display); // Inicia o cronômetro
+            }
+
+            // Recupera o referenceId do campo oculto
+            var referenceIdElement = document.getElementById('reference-id');
+            if (referenceIdElement) {
+                var referenceId = referenceIdElement.value;
+                setInterval(function() {
+                    checkPaymentStatus(referenceId); // Verifica o status do pagamento a cada 5 segundos
+                }, 5000);
+            }
+        });
     </script>
 </body>
 </html>
