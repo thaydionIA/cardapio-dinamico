@@ -142,15 +142,6 @@ class PayController {
         // Atualiza o valor total da cobrança
         $data['charges'][0]['amount']['value'] = intval($valorTotal);
 
-        // Verificação do valor criptografado e logs temporários
-        if (!isset($_POST['encriptedCard']) || empty($_POST['encriptedCard'])) {
-            echo "Erro: Cartão não criptografado foi recebido.";
-            exit();
-        } else {
-            file_put_contents('logs/pay_log.txt', 'Cartão criptografado recebido: ' . $_POST['encriptedCard'] . "\n", FILE_APPEND);
-            $data['charges'][0]['payment_method']['card']['encrypted'] = $_POST['encriptedCard'];
-        }
-
         // Inicializa o cURL para enviar a solicitação de pagamento ao PagSeguro
         $curl = curl_init('https://sandbox.api.pagseguro.com/orders');
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
@@ -169,12 +160,12 @@ class PayController {
 
         // Verifica se o pagamento foi realizado com sucesso
         if (isset($responseData['charges'][0]['status']) && $responseData['charges'][0]['status'] === 'PAID') {
-            // Redireciona para a página de sucesso
-            header('Location: http://localhost/cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');    
+            // Redireciona para a página de sucesso usando caminho relativo da URL
+            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');
             exit();
         } else {
-            // Redireciona para a página de falha
-            header('Location: http://localhost/cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
+            // Redireciona para a página de falha usando caminho relativo da URL
+            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
             exit();
         }
     }
@@ -188,3 +179,4 @@ $payController = new PayController($pdo, $productController, $userController, $a
 
 // Chamando o método sem especificar um produto, pois agora ele utiliza o carrinho do usuário
 $payController->createPayment();
+?>
