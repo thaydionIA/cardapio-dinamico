@@ -25,6 +25,27 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entradas</title>
     <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>"> <!-- Cache busting para carregar a versão mais recente do CSS -->
+    <style>
+        .mensagem-sucesso {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .mensagem-sucesso.mostrar {
+            display: block;
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
     <h1>Entradas</h1>
@@ -43,7 +64,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p class="preco">Preço: R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
                 
                 <!-- Formulário para adicionar ao carrinho -->
-                <form action="/cardapio-dinamico/carrinho.php" method="POST">
+                <form class="adicionar-carrinho-form">
                     <input type="hidden" name="produto_id" value="<?php echo $produto['id']; ?>">
 
                     <!-- Campo de quantidade com ícones de aumentar e diminuir -->
@@ -54,34 +75,24 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
 
                     <!-- Botão de adicionar ao carrinho com a classe CSS -->
-                    <button type="submit" class="adicionar-carrinho-btn">Adicionar ao Carrinho</button>
+                    <button type="button" class="adicionar-carrinho-btn">Adicionar ao Carrinho</button>
                 </form>
             </div>
         </div>
         <?php endforeach; ?>
     </div> 
+
+    <!-- Mensagem de sucesso -->
+    <div id="mensagemSucesso" class="mensagem-sucesso">Produto adicionado ao carrinho com sucesso!</div>
+
     <!-- Inclusão do rodapé se o arquivo estiver sendo acessado diretamente -->
     <?php if ($incluir_rodape): ?>
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; ?>
     <?php endif; ?>
 
-    <!-- Coloque o JavaScript aqui, antes do fechamento da tag body -->
-    <script>
-        document.querySelectorAll('.aumentar').forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.parentNode.querySelector('.quantidade-input');
-                input.value = parseInt(input.value) + 1;
-            });
-        });
-
-        document.querySelectorAll('.diminuir').forEach(button => {
-            button.addEventListener('click', function() {
-                const input = this.parentNode.querySelector('.quantidade-input');
-                if (parseInt(input.value) > 1) {
-                    input.value = parseInt(input.value) - 1;
-                }
-            });
-        });
-    </script>
+    <!-- Inclui o script.js se a página for acessada diretamente -->
+    <?php if (basename($_SERVER['PHP_SELF']) == 'entradas.php'): ?>
+        <script src="../assets/js/script.js"></script>
+    <?php endif; ?>
 </body>
 </html>

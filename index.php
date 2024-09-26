@@ -12,7 +12,6 @@ if (file_exists('config.php')) {
 
 // Verifique se o usuário está na parte de admin
 $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -90,7 +89,6 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         foreach ($sections as $id => $section) {
             if ($id === 'perfil') {
                 continue; // Pula a inclusão do perfil
-
             }
 
             if ($id === 'login' || $id === 'cadastro') {
@@ -122,46 +120,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         ?>
     </footer>
 
-    <!-- Código JavaScript -->
-    <script>
-        function registrarEventosQuantidade() {
-            document.querySelectorAll('.aumentar').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.parentNode.querySelector('.quantidade-input');
-                    input.value = parseInt(input.value) + 1;
-                });
-            });
-
-            document.querySelectorAll('.diminuir').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.parentNode.querySelector('.quantidade-input');
-                    if (parseInt(input.value) > 1) {
-                        input.value = parseInt(input.value) - 1;
-                    }
-                });
-            });
-        }
-
-        function removerEventosQuantidade() {
-            document.querySelectorAll('.aumentar').forEach(button => {
-                const clone = button.cloneNode(true);
-                button.parentNode.replaceChild(clone, button);
-            });
-
-            document.querySelectorAll('.diminuir').forEach(button => {
-                const clone = button.cloneNode(true);
-                button.parentNode.replaceChild(clone, button);
-            });
-        }
-
-        function initQuantidade() {
-            removerEventosQuantidade();
-            registrarEventosQuantidade();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            initQuantidade();
-        });
-    </script>
+    <!-- Inclui o arquivo de JavaScript centralizado -->
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
