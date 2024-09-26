@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
 </head>
 <body>
 <form method="post" name="formCard" id="formCard" action="../controllers/PayController.php">
-    <div class="col-6 m-auto">
+    <div class="container">
         <input type="hidden" name="finalizar_compra" value="1">
         <input type="text" name="publicKey" id="publicKey" value="<?php echo $objKey::getPublicKey(); ?>">
         <input type="text" name="encriptedCard" id="encriptedCard">
