@@ -72,16 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
         .col-6 {
             margin: 0 auto; /* Centraliza o conteúdo da coluna */
         }
-
-        /* Campo de exibição da criptografia */
-        #encriptedCardDisplay {
-            margin-top: 15px;
-            background-color: #222; /* Fundo escuro */
-            color: #d4af37; /* Texto dourado */
-            padding: 10px;
-            border: 1px solid #444; /* Borda sutil */
-            border-radius: 5px;
-        }
     </style>
 
 </head>
@@ -90,8 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
     <div class="container">
         <input type="hidden" name="finalizar_compra" value="1">
         
-
-
         <!-- Cartão criptografado (campo oculto para envio) -->
         <input type="hidden" name="encriptedCard" id="encriptedCard">
 
@@ -110,8 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
         <!-- CVV do cartão -->
         <input type="text" class="form-control" name="cardCvv" id="cardCvv" maxlength="4" placeholder="CVV do Cartão" required>
 
-
-
         <!-- Botão de pagamento -->
         <input type="submit" class="btn btn-primary" value="Pagar">
     </div>
@@ -124,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
 <script>
     function encryptCard() {
         // Obtenha a chave pública do PagSeguro
-        let publicKey = document.getElementById('publicKey').value;
+        let publicKey = '<?php echo $objKey::getPublicKey(); ?>'; // Usar diretamente a chave pública no JavaScript
         let cardNumber = document.getElementById('cardNumber').value;
         let cardHolder = document.getElementById('cardHolder').value;
         let cardMonth = document.getElementById('cardMonth').value;
@@ -148,9 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
             return false; // Evita o envio do formulário se a criptografia falhar
         }
 
-        // Atribua o valor criptografado ao campo oculto e ao campo visível
+        // Atribua o valor criptografado ao campo oculto
         document.getElementById('encriptedCard').value = card.encryptedCard;
-        document.getElementById('encriptedCardDisplay').value = card.encryptedCard;
 
         // Limpa os campos de cartão para evitar que dados sensíveis sejam enviados sem criptografia
         document.getElementById('cardNumber').value = '';
