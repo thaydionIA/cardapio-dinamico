@@ -90,8 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
     <div class="container">
         <input type="hidden" name="finalizar_compra" value="1">
         
-        <!-- Chave pública -->
-        <input type="text" name="publicKey" id="publicKey" value="<?php echo $objKey::getPublicKey(); ?>" readonly>
+
 
         <!-- Cartão criptografado (campo oculto para envio) -->
         <input type="hidden" name="encriptedCard" id="encriptedCard">
@@ -111,11 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['finalizar_compra'])) 
         <!-- CVV do cartão -->
         <input type="text" class="form-control" name="cardCvv" id="cardCvv" maxlength="4" placeholder="CVV do Cartão" required>
 
-        <!-- Exibição da criptografia gerada -->
-        <div class="form-group">
-            <label for="encriptedCardDisplay">Cartão Criptografado:</label>
-            <input type="text" id="encriptedCardDisplay" class="form-control" readonly>
-        </div>
+
 
         <!-- Botão de pagamento -->
         <input type="submit" class="btn btn-primary" value="Pagar">
