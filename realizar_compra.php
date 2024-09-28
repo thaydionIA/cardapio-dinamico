@@ -73,3 +73,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
 <?php
 include 'footer.php'; // Inclua o rodapé se necessário
 ?>
+ <!-- Inclui o arquivo de JavaScript centralizado -->
+ <script src="assets/js/script.js"></script>

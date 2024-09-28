@@ -167,5 +167,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
     <?php if ($incluir_rodape): ?>
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; ?>
     <?php endif; ?>
+     <!-- Inclui o arquivo de JavaScript centralizado -->
+     <script src="assets/js/script.js"></script>
 </body>
 </html>

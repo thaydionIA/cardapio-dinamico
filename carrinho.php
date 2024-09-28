@@ -43,6 +43,7 @@ try {
     $carrinho_db = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Preenche a variável de sessão com os dados do banco
+    $_SESSION['carrinho'] = []; // Limpa o carrinho da sessão antes de preencher
     foreach ($carrinho_db as $item) {
         $_SESSION['carrinho'][$item['produto_id']] = $item['quantidade'];
     }
@@ -106,3 +107,12 @@ if (empty($_SESSION['carrinho'])) {
 
 require_once 'footer.php'; // Inclui o rodapé
 ?>
+
+<!-- Inclua o script.js e garanta que o contador seja atualizado -->
+<script src="/cardapio-dinamico/assets/js/script.js"></script>
+<script>
+    // Chama a função para atualizar o contador do carrinho ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        atualizarContadorCarrinho();
+    });
+</script>

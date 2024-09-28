@@ -1,4 +1,11 @@
-<?php include 'config.php'; ?>
+<?php
+include 'config.php';
+
+// Verifica se a sessão já foi iniciada
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Inicia a sessão se ainda não estiver ativa
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,14 +26,14 @@
             padding: 10px;
         }
         .logo-container {
-           display: inline-block;
-           width: 100px; /* Ajuste a largura desejada */
-           height: 100px; /* Ajuste a altura desejada */
-            overflow: hidden; /* Isso impede que o conteúdo exceda o tamanho do container */
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
         }
         .logo-container img {
-           width: 100%;
-           height: auto; /* Mantém a proporção da imagem ao ajustar a largura */
+            width: 100%;
+            height: auto;
         }
         .return-button-container {
             display: inline-block;
@@ -52,18 +59,41 @@
             text-decoration: none;
             color: white;
         }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .cart-count {
+            position: absolute;
+            top: -3px;
+            right: -2px;
+            transform: translate(50%, -50%);
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            font-size: 10px;
+            text-align: center;
+            line-height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden {
+            display: none !important; /* Garante que o contador fique oculto */
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <!-- Espaço para a logo do cliente -->
     <div class="logo-container">
-        <!-- Use um caminho absoluto para garantir que a logo seja exibida corretamente em todas as páginas -->
         <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Cliente" class="logo">
     </div>
 
-    <!-- Botão para retornar ao index principal -->
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
     </div>
@@ -71,9 +101,15 @@
     <!-- Ícone do carrinho de compras -->
     <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
         <i class="fas fa-shopping-cart"></i>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- Inicia sem a classe 'hidden' para deixar o JS controlar a visibilidade -->
+            <span id="cart-count" class="cart-count">0</span>
+        <?php else: ?>
+            <!-- Mostra o ícone sem o contador se o usuário não estiver logado -->
+            <span id="cart-count" class="cart-count hidden"></span>
+        <?php endif; ?>
     </div>
 
-    <!-- Navegação do site -->
     <nav>
         <ul>
             <?php foreach ($sections as $id => $section): ?>
@@ -81,8 +117,12 @@
             <?php endforeach; ?>
         </ul>
     </nav>
-
-    
 </header>
 
 <main>
+
+<!-- Inclua o arquivo JavaScript -->
+<script src="/cardapio-dinamico/assets/js/scripts.js"></script>
+
+</body>
+</html>

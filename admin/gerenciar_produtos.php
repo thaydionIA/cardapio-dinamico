@@ -64,5 +64,5 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </html>
 <?php 
 // Corrigir o caminho para o footer.php usando um caminho absoluto
-include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php'; 
+include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer-ad.php'; 
 ?>

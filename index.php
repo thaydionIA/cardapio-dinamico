@@ -22,16 +22,42 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            color: <?php echo $text_color; ?>;
+    body {
+        color: <?php echo $text_color; ?>;
+    }
+    header {
+        background-color: <?php echo $primary_color; ?>;
+    }
+    footer {
+        background-color: <?php echo $primary_color; ?>;
+    }
+    /* Estilo para o contador do carrinho */
+    .cart-icon {
+        position: relative;
+        display: inline-block;
+    }
+    .cart-count {
+        position: absolute;
+        top: -3px; /* Ajuste para baixar um pouco o contador */
+        right: -2px; /* Ajuste para mover o contador um pouco mais para a direita */
+        transform: translate(50%, -50%);
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 0;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        text-align: center;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hidden {
+            display: none !important; /* Garante que o contador fique oculto */
         }
-        header {
-            background-color: <?php echo $primary_color; ?>;
-        }
-        footer {
-            background-color: <?php echo $primary_color; ?>;
-        }
-    </style>
+</style>
 </head>
 
 <body>
@@ -41,9 +67,17 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             <h1><?php echo $site_name; ?></h1>
         </div>
         <nav>
-            <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
+            <!-- Ícone do carrinho de compras -->
+    <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
+        <i class="fas fa-shopping-cart"></i>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <!-- Inicia sem a classe 'hidden' para deixar o JS controlar a visibilidade -->
+            <span id="cart-count" class="cart-count">0</span>
+        <?php else: ?>
+            <!-- Mostra o ícone sem o contador se o usuário não estiver logado -->
+            <span id="cart-count" class="cart-count hidden"></span>
+        <?php endif; ?>
+    </div>
             <ul>
                 <?php foreach ($sections as $id => $section): ?>
                     <li><a href="<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a></li>
