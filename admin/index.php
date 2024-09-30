@@ -30,7 +30,9 @@ echo "Bem-vindo, " . htmlspecialchars($_SESSION['usuario']['nome']);
         <h1>Painel Administrativo</h1>
         <p><a href="adicionar_produto.php">Adicionar Novo Produto</a></p>
         <p><a href="gerenciar_produtos.php">Gerenciar Produtos</a></p>
+        <p><a href="gerenciar_pedidos.php">Gerenciar Pedidos</a></p>
         <p><a href="logout.php">Logout</a></p>
+       
     </div>
 </body>
 </html>

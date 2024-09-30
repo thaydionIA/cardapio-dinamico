@@ -16,6 +16,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio - <?php echo $site_name; ?></title>
@@ -89,6 +90,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
                     <li><a href="cadastro.php">Cadastrar</a></li>
                 <?php else: ?>
                     <li><a href="perfil.php">Meu Perfil</a></li>
+                    <li><a href="meus_pedidos.php">Meu Pedidos</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 <?php endif; ?>
             </ul>

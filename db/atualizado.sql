@@ -242,3 +242,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-09-21  0:25:46
+ALTER TABLE vendas 
+ADD COLUMN status_pedido ENUM('Pedido Feito', 'Em Preparo', 'Saiu para Entrega', 'Entregue') DEFAULT 'Pedido Feito';
