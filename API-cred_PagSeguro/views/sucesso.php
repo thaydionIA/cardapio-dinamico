@@ -1,3 +1,53 @@
+<?php
+// Incluir arquivo de conexão com o banco de dados
+include '../../db/conexao.php'; // Verifique se o caminho para o arquivo de conexão está correto
+
+// Verificar se a sessão já foi iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Pegar o ID do cliente na sessão
+$cliente_id = $_SESSION['user_id']; // Certifique-se de que o cliente está logado
+
+// Recalcular o valor total do carrinho
+$valor_total = 0;
+if (isset($_SESSION['carrinho'])) {
+    foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
+        // Consultar o preço do produto no banco de dados
+        $stmt = $pdo->prepare("SELECT preco FROM produtos WHERE id = :id");
+        $stmt->bindParam(':id', $produto_id);
+        $stmt->execute();
+        $produto = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($produto) {
+            $subtotal = $produto['preco'] * $quantidade;
+            $valor_total += $subtotal;
+        }
+    }
+}
+
+// Definir o status como "Cartão De Crédito"
+$status = 'Pago (Cartão De Crédito)';
+
+// Inserir a venda no banco de dados
+$query = "INSERT INTO vendas (cliente_id, total, status) VALUES (:cliente_id, :total, :status)";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':cliente_id', $cliente_id);
+$stmt->bindParam(':total', $valor_total);
+$stmt->bindParam(':status', $status);
+
+if ($stmt->execute()) {
+    
+} else {
+
+}
+
+// Fechar a conexão
+$stmt = null;
+$pdo = null;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
