@@ -8,7 +8,6 @@ require_once 'AddressController.php'; // Controlador de endereços
 class PayController {
     private $pdo;
     private $productController;
-    
     private $userController;
     private $addressController;
 
@@ -146,7 +145,7 @@ class PayController {
         $curl = curl_init('https://sandbox.api.pagseguro.com/orders');
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Authorization: 279c9a74-9859-45cf-a74b-c336795236940fcf1fe54a438803fd2c2d6d9e80b69b3122-2b98-4396-a7b9-23aed7fc468c' // Substitua pela chave de produção em ambiente real
+            'Authorization: ' . '279c9a74-9859-45cf-a74b-c336795236940fcf1fe54a438803fd2c2d6d9e80b69b3122-2b98-4396-a7b9-23aed7fc468c' // Substitua pela chave de produção em ambiente real
         ]);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -159,50 +158,51 @@ class PayController {
         $responseData = json_decode($response, true);
 
         // Verifica se o pagamento foi realizado com sucesso
-if (isset($responseData['charges'][0]['status']) && $responseData['charges'][0]['status'] === 'PAID') {
-    // Inicia a inserção da venda no banco de dados
+        if (isset($responseData['charges'][0]['status']) && $responseData['charges'][0]['status'] === 'PAID') {
+            // Inicia a inserção da venda no banco de dados
 
-    // Inserir a venda na tabela vendas
-    $query = "INSERT INTO vendas (cliente_id, total, status) VALUES (:cliente_id, :total, :status)";
-    $stmt = $this->pdo->prepare($query);
-    $stmt->bindParam(':cliente_id', $userId);
-    $stmt->bindParam(':total', $data['charges'][0]['amount']['value']); // Valor total em centavos
-    $status = 'Pago (Cartão De Crédito)';
-    $stmt->bindParam(':status', $status);
-    
-    if ($stmt->execute()) {
-        // Pega o ID da venda recém-criada
-        $venda_id = $this->pdo->lastInsertId();
-
-        // Inserir os itens do carrinho na tabela itens_venda
-        foreach ($itens as $item) {
-            $query = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco) 
-                      VALUES (:venda_id, :produto_id, :quantidade, :preco)";
+            // Inserir a venda na tabela vendas
+            $query = "INSERT INTO vendas (cliente_id, total, status) VALUES (:cliente_id, :total, :status)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->bindParam(':venda_id', $venda_id);
-            $stmt->bindParam(':produto_id', $item['id']);
-            $stmt->bindParam(':quantidade', $item['quantidade']);
-            $stmt->bindParam(':preco', $item['preco']);
-            $stmt->execute();
+            $stmt->bindParam(':cliente_id', $userId);
+
+            // Divide o valor total por 100 para armazenar em reais (em vez de centavos)
+            $totalReais = $data['charges'][0]['amount']['value'] / 100;
+            $stmt->bindParam(':total', $totalReais); // Agora, o valor total é inserido corretamente em reais
+            $status = 'Pago (Cartão De Crédito)';
+            $stmt->bindParam(':status', $status);
+
+            if ($stmt->execute()) {
+                // Pega o ID da venda recém-criada
+                $venda_id = $this->pdo->lastInsertId();
+
+                // Inserir os itens do carrinho na tabela itens_venda
+                foreach ($itens as $item) {
+                    $query = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco) 
+                              VALUES (:venda_id, :produto_id, :quantidade, :preco)";
+                    $stmt = $this->pdo->prepare($query);
+                    $stmt->bindParam(':venda_id', $venda_id);
+                    $stmt->bindParam(':produto_id', $item['id']);
+                    $stmt->bindParam(':quantidade', $item['quantidade']);
+                    
+                    // Também divide o preço dos itens por 100 para salvar em reais
+                    $precoReais = $item['preco'];
+                    $stmt->bindParam(':preco', $precoReais);
+                    $stmt->execute();
+                }
+            } else {
+                echo "Erro ao processar a compra.";
+                exit();
+            }
+
+            // Redireciona para a página de sucesso
+            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');
+            exit();
+        } else {
+            // Redireciona para a página de falha
+            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
+            exit();
         }
-
-        // Limpar o carrinho após salvar os itens da compra
-        $this->pdo->prepare("DELETE FROM carrinho WHERE usuario_id = :usuario_id")
-                  ->execute(['usuario_id' => $userId]);
-    } else {
-        echo "Erro ao processar a compra.";
-        exit();
-    }
-
-    // Redireciona para a página de sucesso
-    header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');
-    exit();
-} else {
-    // Redireciona para a página de falha
-    header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
-    exit();
-}
-
     }
 }
 
@@ -214,4 +214,3 @@ $payController = new PayController($pdo, $productController, $userController, $a
 
 // Chamando o método sem especificar um produto, pois agora ele utiliza o carrinho do usuário
 $payController->createPayment();
-?>
