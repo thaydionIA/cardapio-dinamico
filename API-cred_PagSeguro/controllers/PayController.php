@@ -159,15 +159,50 @@ class PayController {
         $responseData = json_decode($response, true);
 
         // Verifica se o pagamento foi realizado com sucesso
-        if (isset($responseData['charges'][0]['status']) && $responseData['charges'][0]['status'] === 'PAID') {
-            // Redireciona para a página de sucesso usando caminho relativo da URL
-            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');
-            exit();
-        } else {
-            // Redireciona para a página de falha usando caminho relativo da URL
-            header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
-            exit();
+if (isset($responseData['charges'][0]['status']) && $responseData['charges'][0]['status'] === 'PAID') {
+    // Inicia a inserção da venda no banco de dados
+
+    // Inserir a venda na tabela vendas
+    $query = "INSERT INTO vendas (cliente_id, total, status) VALUES (:cliente_id, :total, :status)";
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindParam(':cliente_id', $userId);
+    $stmt->bindParam(':total', $data['charges'][0]['amount']['value']); // Valor total em centavos
+    $status = 'Pago (Cartão De Crédito)';
+    $stmt->bindParam(':status', $status);
+    
+    if ($stmt->execute()) {
+        // Pega o ID da venda recém-criada
+        $venda_id = $this->pdo->lastInsertId();
+
+        // Inserir os itens do carrinho na tabela itens_venda
+        foreach ($itens as $item) {
+            $query = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco) 
+                      VALUES (:venda_id, :produto_id, :quantidade, :preco)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':venda_id', $venda_id);
+            $stmt->bindParam(':produto_id', $item['id']);
+            $stmt->bindParam(':quantidade', $item['quantidade']);
+            $stmt->bindParam(':preco', $item['preco']);
+            $stmt->execute();
         }
+
+        // Limpar o carrinho após salvar os itens da compra
+        $this->pdo->prepare("DELETE FROM carrinho WHERE usuario_id = :usuario_id")
+                  ->execute(['usuario_id' => $userId]);
+    } else {
+        echo "Erro ao processar a compra.";
+        exit();
+    }
+
+    // Redireciona para a página de sucesso
+    header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/sucesso.php');
+    exit();
+} else {
+    // Redireciona para a página de falha
+    header('Location: /cardapio-dinamico/API-cred_PagSeguro/views/falha.php');
+    exit();
+}
+
     }
 }
 
