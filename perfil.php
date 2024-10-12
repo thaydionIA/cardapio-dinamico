@@ -24,16 +24,43 @@ $stmt_endereco->bindParam(':usuario_id', $user_id, PDO::PARAM_INT);
 $stmt_endereco->execute();
 $endereco = $stmt_endereco->fetch(PDO::FETCH_ASSOC);
 
-// Atualiza os dados do perfil
+// Atualiza os dados do perfil e endereço
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $cpf = $_POST['cpf'];
-    $telefone = $_POST['telefone'];
-    $dd = $_POST['dd'];
-    $foto = $user['foto']; // Mantém a foto existente por padrão
-    $nova_senha = $_POST['senha'];
-    $confirmar_senha = $_POST['confirmar_senha'];
+    // Inicia a consulta SQL para atualizar o perfil
+    $sql = "UPDATE usuarios SET ";
+    $params = [];
+    
+    // Verifica e adiciona cada campo que foi preenchido no formulário
+    if (!empty($_POST['nome'])) {
+        $sql .= "nome = :nome, ";
+        $params[':nome'] = $_POST['nome'];
+    }
+
+    if (!empty($_POST['email'])) {
+        $sql .= "email = :email, ";
+        $params[':email'] = $_POST['email'];
+    }
+
+    if (!empty($_POST['cpf'])) {
+        $sql .= "cpf = :cpf, ";
+        $params[':cpf'] = $_POST['cpf'];
+    }
+
+    if (!empty($_POST['telefone'])) {
+        $sql .= "telefone = :telefone, ";
+        $params[':telefone'] = $_POST['telefone'];
+    }
+
+    if (!empty($_POST['dd'])) {
+        $sql .= "dd = :dd, ";
+        $params[':dd'] = $_POST['dd'];
+    }
+
+    // Se uma nova senha for inserida, adiciona a senha
+    if (!empty($_POST['senha']) && $_POST['senha'] === $_POST['confirmar_senha']) {
+        $sql .= "senha = :senha, ";
+        $params[':senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
+    }
 
     // Se uma nova foto for enviada, processa o upload
     if (!empty($_FILES['foto']['name'])) {
@@ -41,31 +68,77 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_perfil'])) {
         $target_dir = "uploads/clientes/";
         $target_file = $target_dir . $foto;
         move_uploaded_file($_FILES['foto']['tmp_name'], $target_file);
+        $sql .= "foto = :foto, ";
+        $params[':foto'] = $foto;
     }
 
-    // Atualiza a senha apenas se uma nova senha for inserida e as duas senhas coincidirem
-    if (!empty($nova_senha) && $nova_senha === $confirmar_senha) {
-        $senha = password_hash($nova_senha, PASSWORD_BCRYPT);
-    } else {
-        $senha = $user['senha'];
-    }
+    // Remove a última vírgula da consulta SQL
+    $sql = rtrim($sql, ", ");
+    $sql .= " WHERE id = :id";
+    $params[':id'] = $user_id;
 
-    // Atualiza os dados no banco de dados
-    $sql = "UPDATE usuarios SET nome = :nome, email = :email, cpf = :cpf, telefone = :telefone, dd = :dd, senha = :senha, foto = :foto WHERE id = :id";
+    // Executa a consulta de atualização
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':cpf', $cpf);
-    $stmt->bindParam(':telefone', $telefone);
-    $stmt->bindParam(':dd', $dd);
-    $stmt->bindParam(':senha', $senha);
-    $stmt->bindParam(':foto', $foto);
-    $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+    if ($stmt->execute($params)) {
+        // Atualiza o endereço apenas se o usuário preencher os campos de endereço
+        $sql_endereco = "UPDATE enderecos_entrega SET ";
+        $params_endereco = [];
 
-    if ($stmt->execute()) {
-        $_SESSION['user_nome'] = $nome;
-        header('Location: perfil.php');
-        exit();
+        if (!empty($_POST['rua'])) {
+            $sql_endereco .= "rua = :rua, ";
+            $params_endereco[':rua'] = $_POST['rua'];
+        }
+
+        if (!empty($_POST['numero'])) {
+            $sql_endereco .= "numero = :numero, ";
+            $params_endereco[':numero'] = $_POST['numero'];
+        }
+
+        if (!empty($_POST['complemento'])) {
+            $sql_endereco .= "complemento = :complemento, ";
+            $params_endereco[':complemento'] = $_POST['complemento'];
+        }
+
+        if (!empty($_POST['bairro'])) {
+            $sql_endereco .= "bairro = :bairro, ";
+            $params_endereco[':bairro'] = $_POST['bairro'];
+        }
+
+        if (!empty($_POST['cidade'])) {
+            $sql_endereco .= "cidade = :cidade, ";
+            $params_endereco[':cidade'] = $_POST['cidade'];
+        }
+
+        if (!empty($_POST['estado'])) {
+            $sql_endereco .= "estado = :estado, ";
+            $params_endereco[':estado'] = $_POST['estado'];
+        }
+
+        if (!empty($_POST['cep'])) {
+            $sql_endereco .= "cep = :cep, ";
+            $params_endereco[':cep'] = $_POST['cep'];
+        }
+
+        // Remove a última vírgula da consulta SQL de endereço
+        $sql_endereco = rtrim($sql_endereco, ", ");
+        $sql_endereco .= " WHERE usuario_id = :usuario_id";
+        $params_endereco[':usuario_id'] = $user_id;
+
+        // Executa a consulta de atualização do endereço, se necessário
+        if (!empty($params_endereco)) {
+            $stmt_endereco = $pdo->prepare($sql_endereco);
+            if ($stmt_endereco->execute($params_endereco)) {
+                $_SESSION['user_nome'] = $_POST['nome'];
+                header('Location: perfil.php');
+                exit();
+            } else {
+                echo "Erro ao atualizar o endereço.";
+            }
+        } else {
+            $_SESSION['user_nome'] = $_POST['nome'];
+            header('Location: perfil.php');
+            exit();
+        }
     } else {
         echo "Erro ao atualizar o perfil.";
     }
@@ -113,41 +186,41 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php';
             </div>
             
             <label>Nome:</label>
-            <input type="text" name="nome" value="<?= htmlspecialchars($user['nome']); ?>" required>
-            
+            <input type="text" name="nome" value="<?= htmlspecialchars($user['nome']); ?>">
+
             <label>Email:</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($user['email']); ?>" required>
-            
+            <input type="email" name="email" value="<?= htmlspecialchars($user['email']); ?>">
+
             <label>CPF:</label>
-            <input type="text" name="cpf" value="<?= htmlspecialchars($user['cpf']); ?>" required>
-            
+            <input type="text" name="cpf" value="<?= htmlspecialchars($user['cpf']); ?>">
+
             <label>DDD:</label>
-            <input type="text" name="dd" value="<?= htmlspecialchars($user['dd']); ?>" required>
-            
+            <input type="text" name="dd" value="<?= htmlspecialchars($user['dd']); ?>">
+
             <label>Telefone:</label>
             <input type="text" name="telefone" value="<?= htmlspecialchars($user['telefone']); ?>">
 
             <h3>Endereço de Entrega</h3>
             <label>Rua:</label>
-            <input type="text" name="rua" value="<?= htmlspecialchars($endereco['rua']); ?>" required>
-            
+            <input type="text" name="rua" value="<?= htmlspecialchars($endereco['rua']); ?>">
+
             <label>Número:</label>
-            <input type="text" name="numero" value="<?= htmlspecialchars($endereco['numero']); ?>" required>
+            <input type="text" name="numero" value="<?= htmlspecialchars($endereco['numero']); ?>">
 
             <label>Complemento:</label>
             <input type="text" name="complemento" value="<?= htmlspecialchars($endereco['complemento']); ?>">
-            
+
             <label>Bairro:</label>
-            <input type="text" name="bairro" value="<?= htmlspecialchars($endereco['bairro']); ?>" required>
-            
+            <input type="text" name="bairro" value="<?= htmlspecialchars($endereco['bairro']); ?>">
+
             <label>Cidade:</label>
-            <input type="text" name="cidade" value="<?= htmlspecialchars($endereco['cidade']); ?>" required>
-            
+            <input type="text" name="cidade" value="<?= htmlspecialchars($endereco['cidade']); ?>">
+
             <label>Estado:</label>
-            <input type="text" name="estado" value="<?= htmlspecialchars($endereco['estado']); ?>" maxlength="2" required>
+            <input type="text" name="estado" value="<?= htmlspecialchars($endereco['estado']); ?>" maxlength="2">
 
             <label>CEP:</label>
-            <input type="text" name="cep" value="<?= htmlspecialchars($endereco['cep']); ?>" required>
+            <input type="text" name="cep" value="<?= htmlspecialchars($endereco['cep']); ?>">
 
             <h3>Alterar Senha</h3>
             <label>Nova Senha:</label>
