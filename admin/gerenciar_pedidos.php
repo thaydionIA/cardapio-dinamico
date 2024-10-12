@@ -9,8 +9,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Verificar se o administrador está logado
 if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
+    echo "Acesso negado. Faça login como administrador para acessar esta página.";
     exit();
 }
 
@@ -51,7 +52,7 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <tr>
                 <td><?php echo htmlspecialchars($pedido['id']); ?></td>
                 <td><?php echo htmlspecialchars($pedido['cliente']); ?></td>
-                <td>R$<?php echo htmlspecialchars($pedido['total']); ?></td>
+                <td>R$<?php echo number_format($pedido['total'], 2, ',', '.'); ?></td>
                 <td><?php echo htmlspecialchars($pedido['status_pedido']); ?></td>
                 <td><?php echo htmlspecialchars($pedido['status']); ?></td> <!-- Exibe o status do pagamento -->
                 <td><?php echo htmlspecialchars($pedido['data_venda']); ?></td>
@@ -69,6 +70,12 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <br>
                         <button type="submit" name="atualizar_status">Atualizar</button>
                     </form>
+
+                    <!-- Botão Emitir Cupom -->
+                    <form action="emitir_cupom.php" method="post" style="display:inline;">
+                        <input type="hidden" name="venda_id" value="<?php echo htmlspecialchars($pedido['id']); ?>">
+                        <button type="submit">Emitir Cupom</button>
+                    </form>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -77,6 +84,7 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </body>
 </html>
+
 <?php 
 // Incluir o footer.php
 include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer-ad.php'; 

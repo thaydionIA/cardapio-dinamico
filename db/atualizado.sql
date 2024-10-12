@@ -33,7 +33,7 @@ CREATE TABLE `carrinho` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=296 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `carrinho` (
 
 LOCK TABLES `carrinho` WRITE;
 /*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
-INSERT INTO `carrinho` VALUES (294,4,4,1,'2024-10-01 23:42:52'),(295,4,21,1,'2024-10-02 00:06:46');
+INSERT INTO `carrinho` VALUES (310,4,26,1,'2024-10-12 12:59:29'),(308,4,21,2,'2024-10-08 13:28:26'),(309,4,25,1,'2024-10-12 12:59:28');
 /*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,8 +76,37 @@ CREATE TABLE `enderecos_entrega` (
 
 LOCK TABLES `enderecos_entrega` WRITE;
 /*!40000 ALTER TABLE `enderecos_entrega` DISABLE KEYS */;
-INSERT INTO `enderecos_entrega` VALUES (1,'neymar','1384','q52 l7','Senador Canedo','Goias','GO','BRA','75258831',1,'2024-09-20 13:23:55'),(2,'Anhanguera','775','quadra 215, lote 9','Novo Mundo','Goiânia','Go','BRA','74705010',3,'2024-09-21 04:05:57'),(3,'Av.anhanguera, Quadra 215, Número 775, Lote 9','775','av anhanguera','novo mundo','Goiânia','GO','BRA','74705010',4,'2024-09-23 12:43:56');
+INSERT INTO `enderecos_entrega` VALUES (1,'neymar','1384','q52 l7','Senador Canedo','Goias','GO','BRA','75258831',1,'2024-09-20 13:23:55'),(2,'Anhanguera','775','quadra 215, lote 9','Novo Mundo','Goiânia','Go','BRA','74705010',3,'2024-09-21 04:05:57'),(3,'Av.anhanguera','775',' Quadra 215, Lote 9','novo mundo','Goiânia','GO','BRA','74705010',4,'2024-09-23 12:43:56');
 /*!40000 ALTER TABLE `enderecos_entrega` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `itens_venda`
+--
+
+DROP TABLE IF EXISTS `itens_venda`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `itens_venda` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `venda_id` int NOT NULL,
+  `produto_id` int NOT NULL,
+  `quantidade` int NOT NULL,
+  `preco` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `venda_id` (`venda_id`),
+  KEY `produto_id` (`produto_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `itens_venda`
+--
+
+LOCK TABLES `itens_venda` WRITE;
+/*!40000 ALTER TABLE `itens_venda` DISABLE KEYS */;
+INSERT INTO `itens_venda` VALUES (1,9,21,1,10.00),(2,10,26,1,10.00),(3,10,21,2,10.00),(4,10,25,1,10.00);
+/*!40000 ALTER TABLE `itens_venda` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -221,7 +250,7 @@ CREATE TABLE `vendas` (
   `status_pedido` enum('Pedido Feito','Em Preparo','Saiu para Entrega','Entregue') DEFAULT 'Pedido Feito',
   PRIMARY KEY (`id`),
   KEY `cliente_id` (`cliente_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +259,7 @@ CREATE TABLE `vendas` (
 
 LOCK TABLES `vendas` WRITE;
 /*!40000 ALTER TABLE `vendas` DISABLE KEYS */;
-INSERT INTO `vendas` VALUES (2,4,'2024-10-02 00:07:22',5010.00,'Pago (Cartão De Crédito)','Entregue');
+INSERT INTO `vendas` VALUES (10,4,'2024-10-12 13:00:07',40.00,'Pago (Cartão De Crédito)','Pedido Feito'),(9,4,'2024-10-08 13:29:14',10.00,'Pago (Cartão De Crédito)','Em Preparo');
 /*!40000 ALTER TABLE `vendas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -243,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-01 21:10:04
+-- Dump completed on 2024-10-12 10:05:28

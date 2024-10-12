@@ -38,9 +38,37 @@ $stmt->bindParam(':total', $valor_total);
 $stmt->bindParam(':status', $status);
 
 if ($stmt->execute()) {
-    
-} else {
+    // Pegar o ID da venda recém-criada
+    $venda_id = $pdo->lastInsertId();
 
+    // Inserir os itens do carrinho na tabela itens_venda
+    if (isset($_SESSION['carrinho'])) {
+        foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
+            // Consultar o preço do produto no banco de dados
+            $stmt = $pdo->prepare("SELECT preco FROM produtos WHERE id = :id");
+            $stmt->bindParam(':id', $produto_id);
+            $stmt->execute();
+            $produto = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($produto) {
+                $preco = $produto['preco'];
+
+                // Inserir os itens na tabela itens_venda
+                $query = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco) VALUES (:venda_id, :produto_id, :quantidade, :preco)";
+                $stmt_insert = $pdo->prepare($query);
+                $stmt_insert->bindParam(':venda_id', $venda_id);
+                $stmt_insert->bindParam(':produto_id', $produto_id);
+                $stmt_insert->bindParam(':quantidade', $quantidade);
+                $stmt_insert->bindParam(':preco', $preco);
+                $stmt_insert->execute();
+            }
+        }
+    }
+
+    // Limpar o carrinho após salvar os itens da compra
+    unset($_SESSION['carrinho']);
+} else {
+    echo "Erro ao processar a compra.";
 }
 
 // Fechar a conexão

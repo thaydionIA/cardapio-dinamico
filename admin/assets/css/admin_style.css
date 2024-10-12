@@ -90,15 +90,15 @@ table img {
     max-width: 50px;
     border-radius: 4px;
 }
+
 /* Estilo do rodapé */
 footer {
-    width: 100%;/* O rodapé ocupa toda a largura da página */
+    width: 100%; /* O rodapé ocupa toda a largura da página */
     background-color: #1c1c1c; /* Cor de fundo */
     color: #d4af37; /* Cor do texto */
-    text-align: center;/* Centraliza o texto dentro do rodapé */
-    padding: 10px 0; /* Espaçamento interno vertical de 10px e */
-    position: relative; /* Posicionamento relativo para manter a estrutura */ 
-
+    text-align: center; /* Centraliza o texto dentro do rodapé */
+    padding: 10px 0; /* Espaçamento interno vertical de 10px */
+    position: relative; /* Posicionamento relativo para manter a estrutura */
 }
 
 /* Para garantir que o conteúdo acima do rodapé não seja sobreposto */
@@ -109,11 +109,12 @@ body {
 /* Estilo do link no rodapé */
 footer a {
     color: #3399ff; /* Cor dos links */
-    text-decoration: none;/* Remove o sublinhado dos links */
+    text-decoration: none; /* Remove o sublinhado dos links */
 }
+
 /* Efeito ao passar o mouse sobre os links */
 footer a:hover {
-    text-decoration: underline;/* Sublinha o link ao passar o mouse */
+    text-decoration: underline; /* Sublinha o link ao passar o mouse */
 }
 
 /* Estilo para a mensagem de erro */
@@ -154,7 +155,6 @@ footer a:hover {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-left: -10px;
-   
 }
 
 .login-container form button[type="submit"] {
@@ -169,4 +169,67 @@ footer a:hover {
 
 .login-container form button[type="submit"]:hover {
     background-color: #4cae4c;
+}
+
+/* Estilos específicos para impressão */
+@media print {
+    body {
+        font-size: 10px;
+        width: 58mm; /* Largura padrão para impressoras de cupom */
+        background-color: white; /* Fundo branco para impressão */
+        color: black; /* Texto preto para impressão */
+        margin: 0;
+        padding: 0;
+    }
+
+    .cupom {
+        padding: 5px;
+        width: 100%;
+    }
+
+    .cupom h1 {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 5px;
+    }
+
+    .itens {
+        margin-bottom: 10px;
+    }
+
+    .itens table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .itens th, .itens td {
+        text-align: left;
+        padding: 2px 0;
+    }
+
+    .total {
+        text-align: right;
+        margin-top: 10px;
+        font-size: 12px;
+    }
+
+    .endereco {
+        font-size: 10px;
+        margin-top: 10px;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 10px;
+    }
+
+    button {
+        display: none; /* Oculta botões na impressão */
+    }
+
+    /* Remover elementos não relevantes para a impressão */
+    footer, .error, .login-container {
+        display: none; /* Oculta o rodapé e outras partes desnecessárias */
+    }
 }
