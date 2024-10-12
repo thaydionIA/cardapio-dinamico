@@ -53,98 +53,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Pedidos</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-                max-width: 100%;
-            }
-
-            /* Exibir os dados da tabela como lista em telas menores */
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-
-            /* Esconder os cabeçalhos */
-            thead tr {
-                display: none;
-            }
-
-            /* Definir estilo para cada linha da tabela */
-            tr {
-                margin-bottom: 15px;
-                border: 1px solid #ddd;
-                padding: 10px;
-                border-radius: 8px;
-            }
-
-            td {
-                border: none;
-                padding: 10px 15px;
-                position: relative;
-                text-align: right;
-            }
-
-            /* Exibir o rótulo correspondente a cada célula */
-            td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 15px;
-                font-weight: bold;
-                color: #1c1c1c;
-                text-transform: uppercase;
-            }
-        }
-    </style>
+    <title>Esqueceu a Senha</title>
+    <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css"> <!-- Incluindo seu CSS principal -->
 </head>
 <body>
-    <div class="container" style="padding: 30px; background-color: #1c1c1c; color: #d4af37; border-radius: 10px; max-width: 1000px; margin: 0 auto;">
-        <h1 style="text-align: center; margin-bottom: 30px;">Meus Pedidos</h1>
-        <table style="width: 100%; border-collapse: collapse; background-color: #f0d28b; border-radius: 8px; overflow: hidden; text-align: center;">
-            <thead>
-                <tr>
-                    <th style="padding: 15px; background-color: #1c1c1c; color: #d4af37; width: 10%;">ID do Pedido</th>
-                    <th style="padding: 15px; background-color: #1c1c1c; color: #d4af37; width: 15%;">Total</th>
-                    <th style="padding: 15px; background-color: #1c1c1c; color: #d4af37; width: 20%;">Status Pedido</th>
-                    <th style="padding: 15px; background-color: #1c1c1c; color: #d4af37; width: 20%;">Status Pagamento</th>
-                    <th style="padding: 15px; background-color: #1c1c1c; color: #d4af37; width: 35%;">Data da Venda</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($pedidos)): ?>
-                    <?php foreach ($pedidos as $pedido): ?>
-                    <tr>
-                        <td data-label="ID do Pedido" style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;"><?php echo htmlspecialchars($pedido['id']); ?></td>
-                        <td data-label="Total" style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">R$<?php echo htmlspecialchars($pedido['total']); ?></td>
-                        <td data-label="Status Pedido" style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;"><?php echo htmlspecialchars($pedido['status_pedido']); ?></td>
-                        <td data-label="Status Pagamento" style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;"><?php echo htmlspecialchars($pedido['status']); ?></td>
-                        <td data-label="Data da Venda" style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;"><?php echo htmlspecialchars($pedido['data_venda']); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5" style="padding: 15px; text-align: center;">Você ainda não fez nenhum pedido.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-        <p style="text-align: center; margin-top: 20px;">
-            <a href="index.php" style="color: #d4af37; text-decoration: none;">Voltar à página inicial</a>
-        </p>
+
+<header>
+<div style="display: flex; align-items: center; position: relative; width: 100%;">
+    <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Site" style="height: 60px; margin-right: 15px;">
+    <h1 style="position: absolute; left: 50%; transform: translateX(-50%); margin: 0;">Recuperar Senha</h1>
+</div>
+   
+</header>
+
+<main>
+    <div class="login-container">
+        <h2>Verifique sua Identidade</h2>
+
+        <?php if ($mensagem): ?>
+            <div class="error"><?php echo $mensagem; ?></div>
+        <?php endif; ?>
+
+        <form action="esqueceu_senha.php" method="POST" class="login-form">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="input-field" placeholder="Ex: exemplo@dominio.com" required>
+            </div>
+            <div>
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" maxlength="9" pattern="\d{9}" class="input-field" placeholder="Ex: 999999999" required>
+            </div>
+            <div>
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" maxlength="11" pattern="\d{11}" class="input-field" placeholder="Ex: 12345678909" required>
+            </div>
+            <button type="submit">Verificar</button>
+        </form>
     </div>
-    <!-- Inclui o arquivo de JavaScript centralizado -->
-    <script src="assets/js/script.js"></script>
+</main>
+
+<script>
+document.querySelector('input[name="cpf"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 11) {
+        this.value = this.value.slice(0, 11); // Limita a 11 dígitos
+    }
+});
+document.querySelector('input[name="telefone"]').addEventListener('input', function (e) {
+    this.value = this.value.replace(/\D/g, ''); // Remove tudo que não for número
+    if (this.value.length > 9) {
+        this.value = this.value.slice(0, 9); // Limita a 9 dígitos
+    }
+});
+</script>
+
+<footer>
+    <p>&copy; 2024 Sistema de Login</p>
+</footer>
+
 </body>
 </html>
-<?php 
-// Incluir o footer.php
-include 'footer.php'; 
-?>
-
