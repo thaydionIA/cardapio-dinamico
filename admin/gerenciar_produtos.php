@@ -31,37 +31,46 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="admin-container">
         <h1>Gerenciar Produtos</h1>
-        <table>
-            <tr>
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Categoria</th>
-                <th>Imagem</th>
-                <th>Ações</th>
-            </tr>
-            <?php foreach ($produtos as $produto): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($produto['nome']); ?></td>
-                <td><?php echo htmlspecialchars($produto['descricao']); ?></td>
-                <td><?php echo htmlspecialchars($produto['preco']); ?></td>
-                <td><?php echo htmlspecialchars($produto['categoria']); ?></td>
-                <td>
-                    <?php if ($produto['imagem']): ?>
-                        <img src="uploads/produtos/<?php echo htmlspecialchars($produto['imagem']); ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>" style="width: 50px;">
-                    <?php endif; ?>
-                </td>
-                <td>
-                    <a href="editar_produto.php?id=<?php echo $produto['id']; ?>">Editar</a> |
-                    <a href="remover_produto.php?id=<?php echo $produto['id']; ?>" onclick="return confirm('Tem certeza que deseja remover este produto?')">Remover</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+
+        <!-- Adicionando o aviso de rolagem para dispositivos móveis -->
+        <div class="scroll-hint">Arraste para o lado para ver mais</div>
+
+        <!-- Adicionando contêiner com rolagem horizontal para dispositivos menores -->
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                    <th>Imagem</th>
+                    <th>Ações</th>
+                </tr>
+                <?php foreach ($produtos as $produto): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($produto['nome']); ?></td>
+                    <td><?php echo htmlspecialchars($produto['descricao']); ?></td>
+                    <td><?php echo htmlspecialchars($produto['preco']); ?></td>
+                    <td><?php echo htmlspecialchars($produto['categoria']); ?></td>
+                    <td>
+                        <?php if ($produto['imagem']): ?>
+                            <img src="uploads/produtos/<?php echo htmlspecialchars($produto['imagem']); ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>" style="width: 50px;">
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <a href="editar_produto.php?id=<?php echo $produto['id']; ?>">Editar</a> |
+                        <a href="remover_produto.php?id=<?php echo $produto['id']; ?>" onclick="return confirm('Tem certeza que deseja remover este produto?')">Remover</a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+
         <p><a href="index.php">Voltar ao Painel</a></p>
     </div>
 </body>
 </html>
+
 <?php 
 // Corrigir o caminho para o footer.php usando um caminho absoluto
 include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer-ad.php'; 

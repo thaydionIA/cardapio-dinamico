@@ -38,48 +38,56 @@ $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
     <div class="admin-container">
         <h1>Gerenciar Pedidos</h1>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Total</th>
-                <th>Status Pedido</th>
-                <th>Status Pagamento</th> <!-- Exibe o status de pagamento -->
-                <th>Data da Venda</th>
-                <th>Ação</th>
-            </tr>
-            <?php foreach ($pedidos as $pedido): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($pedido['id']); ?></td>
-                <td><?php echo htmlspecialchars($pedido['cliente']); ?></td>
-                <td>R$<?php echo number_format($pedido['total'], 2, ',', '.'); ?></td>
-                <td><?php echo htmlspecialchars($pedido['status_pedido']); ?></td>
-                <td><?php echo htmlspecialchars($pedido['status']); ?></td> <!-- Exibe o status do pagamento -->
-                <td><?php echo htmlspecialchars($pedido['data_venda']); ?></td>
-                <td>
-                    <!-- Formulário para atualizar o status do pedido -->
-                    <form method="POST" action="processa_pedido.php">
-                        <input type="hidden" name="venda_id" value="<?php echo htmlspecialchars($pedido['id']); ?>">
-                        <label for="status_pedido">Status Pedido:</label>
-                        <select name="status_pedido">
-                            <option value="Pedido Feito" <?php echo ($pedido['status_pedido'] == 'Pedido Feito') ? 'selected' : ''; ?>>Pedido Feito</option>
-                            <option value="Em Preparo" <?php echo ($pedido['status_pedido'] == 'Em Preparo') ? 'selected' : ''; ?>>Em Preparo</option>
-                            <option value="Saiu para Entrega" <?php echo ($pedido['status_pedido'] == 'Saiu para Entrega') ? 'selected' : ''; ?>>Saiu para Entrega</option>
-                            <option value="Entregue" <?php echo ($pedido['status_pedido'] == 'Entregue') ? 'selected' : ''; ?>>Entregue</option>
-                        </select>
-                        <br>
-                        <button type="submit" name="atualizar_status">Atualizar</button>
-                    </form>
 
-                    <!-- Botão Emitir Cupom -->
-                    <form action="emitir_cupom.php" method="post" style="display:inline;">
-                        <input type="hidden" name="venda_id" value="<?php echo htmlspecialchars($pedido['id']); ?>">
-                        <button type="submit">Emitir Cupom</button>
-                    </form>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+        <!-- Adicionando o aviso de rolagem para dispositivos móveis -->
+        <div class="scroll-hint">Arraste para o lado para ver mais</div>
+
+        <!-- Adicionando contêiner com rolagem horizontal para dispositivos menores -->
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Status Pedido</th>
+                    <th>Status Pagamento</th>
+                    <th>Data da Venda</th>
+                    <th>Ação</th>
+                </tr>
+                <?php foreach ($pedidos as $pedido): ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($pedido['id']); ?></td>
+                    <td><?php echo htmlspecialchars($pedido['cliente']); ?></td>
+                    <td>R$<?php echo number_format($pedido['total'], 2, ',', '.'); ?></td>
+                    <td><?php echo htmlspecialchars($pedido['status_pedido']); ?></td>
+                    <td><?php echo htmlspecialchars($pedido['status']); ?></td>
+                    <td><?php echo htmlspecialchars($pedido['data_venda']); ?></td>
+                    <td>
+                        <!-- Formulário para atualizar o status do pedido -->
+                        <form method="POST" action="processa_pedido.php" style="display: inline-block;">
+                            <input type="hidden" name="venda_id" value="<?php echo htmlspecialchars($pedido['id']); ?>">
+                            <label for="status_pedido">Status Pedido:</label>
+                            <select name="status_pedido">
+                                <option value="Pedido Feito" <?php echo ($pedido['status_pedido'] == 'Pedido Feito') ? 'selected' : ''; ?>>Pedido Feito</option>
+                                <option value="Em Preparo" <?php echo ($pedido['status_pedido'] == 'Em Preparo') ? 'selected' : ''; ?>>Em Preparo</option>
+                                <option value="Saiu para Entrega" <?php echo ($pedido['status_pedido'] == 'Saiu para Entrega') ? 'selected' : ''; ?>>Saiu para Entrega</option>
+                                <option value="Entregue" <?php echo ($pedido['status_pedido'] == 'Entregue') ? 'selected' : ''; ?>>Entregue</option>
+                            </select>
+                            <br>
+                            <button type="submit" name="atualizar_status">Atualizar</button>
+                        </form>
+
+                        <!-- Botão Emitir Cupom -->
+                        <form action="emitir_cupom.php" method="post" style="display:inline;">
+                            <input type="hidden" name="venda_id" value="<?php echo htmlspecialchars($pedido['id']); ?>">
+                            <button type="submit">Emitir Cupom</button>
+                        </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+
         <p><a href="index.php">Voltar ao Painel</a></p>
     </div>
 </body>
