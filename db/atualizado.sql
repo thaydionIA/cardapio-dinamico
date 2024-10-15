@@ -33,7 +33,7 @@ CREATE TABLE `carrinho` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=337 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `carrinho` (
 
 LOCK TABLES `carrinho` WRITE;
 /*!40000 ALTER TABLE `carrinho` DISABLE KEYS */;
-INSERT INTO `carrinho` VALUES (310,4,26,1,'2024-10-12 12:59:29'),(308,4,21,2,'2024-10-08 13:28:26'),(309,4,25,1,'2024-10-12 12:59:28');
+INSERT INTO `carrinho` VALUES (335,4,25,2,'2024-10-15 09:56:53'),(336,4,22,1,'2024-10-15 10:26:20');
 /*!40000 ALTER TABLE `carrinho` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,7 +96,7 @@ CREATE TABLE `itens_venda` (
   PRIMARY KEY (`id`),
   KEY `venda_id` (`venda_id`),
   KEY `produto_id` (`produto_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ CREATE TABLE `itens_venda` (
 
 LOCK TABLES `itens_venda` WRITE;
 /*!40000 ALTER TABLE `itens_venda` DISABLE KEYS */;
-INSERT INTO `itens_venda` VALUES (1,9,21,1,10.00),(2,10,26,1,10.00),(3,10,21,2,10.00),(4,10,25,1,10.00);
+INSERT INTO `itens_venda` VALUES (42,27,22,1,10.00),(41,27,25,2,10.00),(40,26,25,1,10.00),(38,24,21,1,10.00),(37,24,8,1,5.00);
 /*!40000 ALTER TABLE `itens_venda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `produtos` (
 
 LOCK TABLES `produtos` WRITE;
 /*!40000 ALTER TABLE `produtos` DISABLE KEYS */;
-INSERT INTO `produtos` VALUES (1,'Trem bão','Reservado para (Trem bão).',50.00,'sobremesas','66cf9ad9f22e9.jpg','2024-08-25 17:11:10'),(2,'Nome do produto','Reservado para (Descrição do produto).',2000.00,'principais','66cf99ffbee81.jpg','2024-08-25 19:49:24'),(21,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f7dde5104.jpg','2024-09-02 17:37:04'),(22,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f815d8309.jpg','2024-09-02 17:38:29'),(4,'Nome do produto','Reservado para (Descrição do produto).',5000.00,'bebidas','66cf9ac756da5.jpg','2024-08-25 19:57:10'),(25,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc4491018.jpg','2024-09-02 17:56:20'),(8,'Nome do produto','Reservado para (Descrição do produto).',5.00,'principais','66cf9b2943687.jpg','2024-08-28 21:48:25'),(24,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f83a78c3d.jpg','2024-09-02 17:39:06'),(23,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f8290d19d.jpg','2024-09-02 17:38:49'),(26,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc5012d8a.jpg','2024-09-02 17:56:32'),(27,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc638e78d.jpg','2024-09-02 17:56:51');
+INSERT INTO `produtos` VALUES (1,'Trem bão','Reservado para (Trem bão).',50.00,'sobremesas','66cf9ad9f22e9.jpg','2024-08-25 17:11:10'),(2,'Nome do produto','Reservado para (Descrição do produto).',2000.00,'principais','66cf99ffbee81.jpg','2024-08-25 19:49:24'),(21,'Arroz','Reservado para (Descrição do produto).',10.00,'entradas','66d5f7dde5104.jpg','2024-09-02 17:37:04'),(22,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f815d8309.jpg','2024-09-02 17:38:29'),(4,'Nome do produto','Reservado para (Descrição do produto).',5000.00,'bebidas','66cf9ac756da5.jpg','2024-08-25 19:57:10'),(25,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc4491018.jpg','2024-09-02 17:56:20'),(8,'Nome do produto','Reservado para (Descrição do produto).',5.00,'principais','66cf9b2943687.jpg','2024-08-28 21:48:25'),(24,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f83a78c3d.jpg','2024-09-02 17:39:06'),(23,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5f8290d19d.jpg','2024-09-02 17:38:49'),(26,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc5012d8a.jpg','2024-09-02 17:56:32'),(27,'Nome do Produto','Reservado para (Descrição do produto).',10.00,'entradas','66d5fc638e78d.jpg','2024-09-02 17:56:51');
 /*!40000 ALTER TABLE `produtos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +202,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'jose teste','jose@gmail.com','12345678909','$2y$10$sn4AaammqQ.hLnlpXNIqtuRaqCn/xWiX0hELtXyzMKo64aWItTGLy','991098685','62','Rua bv23 Q52 l7','D1.jpeg','2024-09-11 18:57:34'),(3,'Pedro','pedro@gmail.com','05974378156','$2y$10$n/p5DQnyD.6jlqpHnWBYM.VHZXZLiIZzQx1x.2bgpU1t2/ZICeN1.','995776100','62',NULL,'P1.png','2024-09-21 04:05:57'),(4,'teste','teste@gmail.com','64335585187','$2y$10$9ZBNBrfpVFI6pJjM1khXfOuTuFCfcUqPyVa3hVOc5uKk94Zmv.N9q','993041755','62',NULL,'P1.png','2024-09-23 12:43:56');
+INSERT INTO `usuarios` VALUES (1,'jose teste','jose@gmail.com','12345678909','$2y$10$sn4AaammqQ.hLnlpXNIqtuRaqCn/xWiX0hELtXyzMKo64aWItTGLy','991098685','62','Rua bv23 Q52 l7','D1.jpeg','2024-09-11 18:57:34'),(3,'Pedro','pedro@gmail.com','05974378156','$2y$10$n/p5DQnyD.6jlqpHnWBYM.VHZXZLiIZzQx1x.2bgpU1t2/ZICeN1.','995776100','62',NULL,'P1.png','2024-09-21 04:05:57'),(4,'teste','teste@gmail.com','64335585187','$2y$10$d4gJSUi519OtqoCgpOsGyOxDH86OTODvfBcmlLsSfqWjclAQffdjS','993041755','62',NULL,'P1.png','2024-09-23 12:43:56');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,11 +246,11 @@ CREATE TABLE `vendas` (
   `cliente_id` int DEFAULT NULL,
   `data_venda` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total` decimal(10,2) NOT NULL,
-  `status` enum('Pendente','Pago (Cartão De Crédito)','Pago (Pix)') DEFAULT 'Pendente',
+  `status` enum('Pendente','Pago (Cartão De Crédito)','Pago (Pix)','Pago (Dinheiro)') DEFAULT 'Pendente',
   `status_pedido` enum('Pedido Feito','Em Preparo','Saiu para Entrega','Entregue') DEFAULT 'Pedido Feito',
   PRIMARY KEY (`id`),
   KEY `cliente_id` (`cliente_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +259,7 @@ CREATE TABLE `vendas` (
 
 LOCK TABLES `vendas` WRITE;
 /*!40000 ALTER TABLE `vendas` DISABLE KEYS */;
-INSERT INTO `vendas` VALUES (10,4,'2024-10-12 13:00:07',40.00,'Pago (Cartão De Crédito)','Pedido Feito'),(9,4,'2024-10-08 13:29:14',10.00,'Pago (Cartão De Crédito)','Em Preparo');
+INSERT INTO `vendas` VALUES (24,4,'2024-10-12 15:57:34',15.00,'Pago (Cartão De Crédito)','Pedido Feito'),(26,4,'2024-10-15 10:15:44',10.00,'Pago (Dinheiro)','Pedido Feito'),(27,4,'2024-10-15 10:26:51',30.00,'Pago (Cartão De Crédito)','Pedido Feito');
 /*!40000 ALTER TABLE `vendas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -272,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-12 10:05:28
+-- Dump completed on 2024-10-15  7:49:06

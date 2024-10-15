@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Inicia o buffer de saída
 session_start();
 require_once 'db/conexao.php'; // Ajuste o caminho conforme necessário
 include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php'; // Inclua o cabeçalho se necessário
@@ -6,7 +7,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/header.php'; // Inclua o
 // Verifica se o usuário está logado e se o carrinho não está vazio
 if (!isset($_SESSION['user_id']) || empty($_SESSION['carrinho'])) {
     echo "<h1>Você precisa estar logado e ter itens no carrinho para realizar a compra.</h1>";
-    require_once 'footer.php'; // Inclui o rodapé
+    include 'footer.php'; // Inclui o rodapé
     exit;
 }
 
@@ -24,15 +25,14 @@ foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
     }
 }
 
-// Verifica se o formulário foi enviado e redireciona para a API correta
+// Verifica se o formulário foi enviado e redireciona para a API correta ou processa o pagamento em dinheiro
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
     $forma_pagamento = $_POST['forma_pagamento'];
 
-    // URL base da sua API
+    // URLs para diferentes métodos de pagamento
     $url_api_pix = '/cardapio-dinamico/PIXPAGSEGURO/controllers/PaymentControllerPix.php'; // URL específica para o pagamento via PIX
     $url_api_credito = '/cardapio-dinamico/API-cred_PagSeguro/views/index.php'; // URL para o pagamento via crédito
     
-    // Redireciona para a URL da API correspondente
     if ($forma_pagamento === 'pix') {
         // Redirecionar para o arquivo específico de pagamento via PIX
         $url_pagamento = $url_api_pix . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
@@ -43,13 +43,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
         $url_pagamento = $url_api_credito . '?valor=' . urlencode($valor_total) . '&user_id=' . urlencode($_SESSION['user_id']) . '&forma_pagamento=' . urlencode($forma_pagamento);
         header("Location: $url_pagamento");
         exit;
+    } elseif ($forma_pagamento === 'dinheiro') {
+        // Processar o pagamento em dinheiro
+        
+        // Insere a venda na tabela vendas
+        $stmt_venda = $pdo->prepare("INSERT INTO vendas (cliente_id, total, status, status_pedido) VALUES (:cliente_id, :total, 'Pendente', 'Pedido Feito')");
+        $stmt_venda->bindParam(':cliente_id', $_SESSION['user_id']);
+        $stmt_venda->bindParam(':total', $valor_total);
+        $stmt_venda->execute();
+
+        // Obtém o ID da venda recém-criada
+        $venda_id = $pdo->lastInsertId();
+
+        // Insere os itens da venda na tabela itens_venda
+        foreach ($_SESSION['carrinho'] as $produto_id => $quantidade) {
+            $stmt_item_venda = $pdo->prepare("INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco) VALUES (:venda_id, :produto_id, :quantidade, (SELECT preco FROM produtos WHERE id = :produto_id))");
+            $stmt_item_venda->bindParam(':venda_id', $venda_id);
+            $stmt_item_venda->bindParam(':produto_id', $produto_id);
+            $stmt_item_venda->bindParam(':quantidade', $quantidade);
+            $stmt_item_venda->execute();
+        }
+
+        // Redirecionar para a página de sucesso para pagamento em dinheiro
+        header("Location: sucesso_dinheiro.php");
+        exit;
     } else {
         echo "<h1>Forma de pagamento inválida. Por favor, selecione uma opção válida.</h1>";
         exit;
     }
 }
-
-
 ?>
 
 <h1>Escolha a Forma de Pagamento</h1>
@@ -66,12 +88,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
         <input type="radio" name="forma_pagamento" value="credito" required>
         Pagamento via Cartão de Crédito
     </label>
+    <br>
+    <label>
+        <input type="radio" name="forma_pagamento" value="dinheiro" required>
+        Pagamento em Dinheiro
+    </label>
     <br><br>
     <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer;">Confirmar Pagamento</button>
 </form>
 
 <?php
 include 'footer.php'; // Inclua o rodapé se necessário
+ob_end_flush(); // Envia todo o conteúdo do buffer
 ?>
- <!-- Inclui o arquivo de JavaScript centralizado -->
- <script src="assets/js/script.js"></script>

@@ -85,6 +85,29 @@ if (session_status() === PHP_SESSION_NONE) {
         .hidden {
             display: none !important; /* Garante que o contador fique oculto */
         }
+        /* Estilos da barra de busca com a lupa dentro */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border-radius: 20px;
+            padding: 3px 10px;
+            border: 1px solid #ccc;
+        }
+        .search-container input[type="text"] {
+            padding: 5px;
+            border: none;
+            outline: none;
+            width: 180px;
+            border-radius: 20px;
+        }
+        .search-container button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #d4af37; /* Ícone de busca em dourado */
+        }
     </style>
 </head>
 <body>
@@ -94,18 +117,27 @@ if (session_status() === PHP_SESSION_NONE) {
         <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Cliente" class="logo">
     </div>
 
+    <!-- Botão "Retornar ao Início" -->
     <div class="return-button-container">
         <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
+    </div>
+
+    <!-- Barra de busca com ícone dentro -->
+    <div class="search-container">
+        <form action="/cardapio-dinamico/busca.php" method="GET">
+            <input type="text" name="q" placeholder="Buscar produtos..." required>
+            <button type="submit">
+                <i class="fas fa-search"></i> <!-- Ícone de busca (lupa) -->
+            </button>
+        </form>
     </div>
 
     <!-- Ícone do carrinho de compras -->
     <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
         <i class="fas fa-shopping-cart"></i>
         <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- Inicia sem a classe 'hidden' para deixar o JS controlar a visibilidade -->
             <span id="cart-count" class="cart-count">0</span>
         <?php else: ?>
-            <!-- Mostra o ícone sem o contador se o usuário não estiver logado -->
             <span id="cart-count" class="cart-count hidden"></span>
         <?php endif; ?>
     </div>
@@ -121,8 +153,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <main>
 
-<!-- Inclua o arquivo JavaScript -->
-<script src="/cardapio-dinamico/assets/js/scripts.js"></script>
-
+<!-- Inclui o script.js se a página for acessada diretamente -->
+<?php if (basename($_SERVER['PHP_SELF']) == 'header.php'): ?>
+        <script src="../assets/js/script.js"></script>
+    <?php endif; ?>
 </body>
 </html>
