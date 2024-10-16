@@ -7,36 +7,81 @@
     <title>Cardápio - <?php echo $site_name; ?></title>
     <link rel="stylesheet" href="/cardapio-dinamico/assets/css/style.css">
     <style>
-        body {
-            color: <?php echo $text_color; ?>;
-        }
+    /* Estilos principais para desktop */
+    header {
+        background-color: <?php echo $primary_color; ?>;
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .logo-container img {
+        width: 80px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .logo-container h1 {
+        color: #d4af37;
+        font-size: 24px;
+        margin: 0;
+    }
+
+    .return-button-container {
+        display: flex; 
+        align-items: center;
+        margin-right: 200px; /* Mantido o valor conforme desktop */
+    }
+
+    .return-button {
+        text-decoration: none;
+        color: white;
+        background-color: #f0d28b;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+    /* Estilos para dispositivos menores */
+    @media (max-width: 768px) {
         header {
-            background-color: <?php echo $primary_color; ?>;
-            display: flex; 
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
+            flex-direction: column; /* Empilha os elementos verticalmente em telas menores */
+            align-items: flex-start; /* Alinha tudo à esquerda */
         }
+
         .logo-container {
-           display: inline-block;
-           width: 100px; /* Ajuste a largura desejada */
-           height: 100px; /* Ajuste a altura desejada */
-            overflow: hidden; /* Isso impede que o conteúdo exceda o tamanho do container */
+            width: 100%; 
+            justify-content: flex-start; /* Alinha o logo e o nome à esquerda */
         }
-        .logo-container img {
-           width: 100%;
-           height: auto; /* Mantém a proporção da imagem ao ajustar a largura */
+
+        .logo-container h1 {
+            text-align: left; /* Garante que o nome do site fique à esquerda */
+            font-size: 20px; /* Reduz o tamanho da fonte para dispositivos menores, se necessário */
         }
+
         .return-button-container {
-            display: inline-block;
+            margin-right: 0;
+            width: 100%; 
+            justify-content: center;
+            margin-top: 10px;
         }
+
         .return-button {
-            text-decoration: none;
-            color: white;
-            background-color: #f0d28b;
-            padding: 10px 20px;
-            border-radius: 5px;
+            width: 50%; /* Diminui a largura do botão para 50% em dispositivos menores */
+            text-align: center;
         }
+
+        /* Prevenção de rolagem lateral */
+        html, body {
+            overflow-x: hidden;
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -48,9 +93,8 @@
     </div>
     <!-- Botão para retornar ao index principal -->
     <div class="return-button-container">
-        <a href="/cardapio-dinamico/index.php" class="return-button">Retornar ao Início</a>
+        <a href="/cardapio-dinamico/admin/index.php" class="return-button">Retornar ao Início</a>
     </div>
-
 </header>
 
 <main>
