@@ -108,6 +108,65 @@ if (session_status() === PHP_SESSION_NONE) {
             font-size: 18px;
             color: #d4af37; /* Ícone de busca em dourado */
         }
+
+        /* Ícones para o modo responsivo */
+        .responsive-icons {
+            display: none; /* Oculto por padrão, visível apenas em telas pequenas */
+            justify-content: space-between; /* Mantém os ícones nos extremos */
+            width: 100%;
+            position: fixed; /* Garante que os ícones fiquem fixos no topo */
+            top: 10px; /* Ajuste a altura conforme necessário */
+            left: 0;
+            padding: 0 15px; /* Ajusta o espaçamento das bordas */
+            z-index: 1000; /* Garante que os ícones fiquem acima de outros elementos */
+            box-sizing: border-box; /* Garante que o padding seja considerado */
+        }
+
+        .responsive-icons a {
+            display: inline-block;
+        }
+
+        .responsive-icons i {
+            font-size: 25px; /* Diminuído o tamanho dos ícones */
+            color: #d4af37; /* Coloração dourada semelhante ao ícone de carrinho */
+        }
+
+        /* Menu dropdown oculto por padrão */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: <?php echo $primary_color; ?>;
+            top: 50px;
+            right: 15px; /* Alinha o menu ao ícone de hambúrguer */
+            width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f0d28b;
+        }
+
+        @media screen and (max-width: 768px) {
+            /* Exibir ícones e ocultar o botão de retornar */
+            .responsive-icons {
+                display: flex;
+                gap: 10px;
+            }
+            .return-button-container {
+                display: none;
+            }
+            nav {
+                display: none; /* Ocultar o menu de navegação no modo responsivo */
+            }
+        }
     </style>
 </head>
 <body>
@@ -115,6 +174,16 @@ if (session_status() === PHP_SESSION_NONE) {
 <header>
     <div class="logo-container">
         <img src="/cardapio-dinamico/path/logo.jpg" alt="Logo do Cliente" class="logo">
+    </div>
+
+    <!-- Ícones responsivos de home e menu -->
+    <div class="responsive-icons">
+        <a href="/cardapio-dinamico/index.php">
+            <i class="fas fa-home"></i> <!-- Ícone de Home -->
+        </a>
+        <a href="javascript:void(0);" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i> <!-- Ícone de Menu -->
+        </a>
     </div>
 
     <!-- Botão "Retornar ao Início" -->
@@ -151,11 +220,40 @@ if (session_status() === PHP_SESSION_NONE) {
     </nav>
 </header>
 
+<!-- Menu dropdown para o ícone de hambúrguer -->
+<div id="dropdownMenu" class="dropdown-menu">
+    <?php foreach ($sections as $id => $section): ?>
+        <a href="/cardapio-dinamico/<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a>
+    <?php endforeach; ?>
+</div>
+
 <main>
 
 <!-- Inclui o script.js se a página for acessada diretamente -->
 <?php if (basename($_SERVER['PHP_SELF']) == 'header.php'): ?>
         <script src="../assets/js/script.js"></script>
-    <?php endif; ?>
+<?php endif; ?>
+
+<script>
+function toggleMenu() {
+    var menu = document.getElementById("dropdownMenu");
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+
+}
+
+// Fecha o menu se clicar fora dele
+document.addEventListener('click', function(event) {
+    var menu = document.getElementById("dropdownMenu");
+    var toggleButton = document.querySelector('.fas.fa-bars');
+    if (!toggleButton.contains(event.target) && !menu.contains(event.target)) {
+        menu.style.display = "none";
+    }
+});
+</script>
+
 </body>
 </html>

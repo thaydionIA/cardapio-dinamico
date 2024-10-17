@@ -53,7 +53,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         .right-icons {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         .search-container {
             display: flex;
@@ -62,6 +62,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             border-radius: 20px;
             padding: 3px 10px;
             border: 1px solid #ccc;
+            flex-grow: 1;
         }
         .search-container input[type="text"] {
             padding: 5px;
@@ -77,10 +78,16 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             font-size: 18px;
             color: #d4af37; /* Ícone de busca em dourado */
         }
+        .cart-icon, .hamburger-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #d4af37; /* Ícones em dourado */
+            cursor: pointer;
+        }
         .cart-icon {
             position: relative;
-            cursor: pointer;
-            color: #d4af37; /* Ícone do carrinho em dourado */
         }
         .cart-count {
             position: absolute;
@@ -101,8 +108,8 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             justify-content: center;
         }
         nav {
-            background-color: <?php echo $primary_color; ?>; /* Mantenha o fundo preto */
-            padding: 10px 0; /* Adiciona um pouco de espaçamento vertical */
+            background-color: <?php echo $primary_color; ?>;
+            padding: 10px 0;
         }
         nav ul {
             list-style: none;
@@ -122,6 +129,80 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         .hidden {
             display: none !important; /* Isso garante que o contador não seja exibido */
         }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none; /* Esconde o menu principal */
+            }
+
+            .hamburger-menu {
+                display: block; /* Mostra o ícone de hambúrguer em telas pequenas */
+            }
+
+            .menu-responsive {
+                display: none;
+                background-color: <?php echo $primary_color; ?>;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1000;
+                overflow-y: auto;
+                padding-top: 60px; /* Espaço para o header */
+            }
+
+            .menu-responsive .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 24px;
+                color: #d4af37;
+                cursor: pointer;
+                background: none;
+                border: none;
+            }
+
+            .menu-responsive ul {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 0;
+                margin: 0;
+                list-style: none; /* Remove marcadores */
+            }
+
+            .menu-responsive ul li {
+                padding: 15px 0;
+                text-align: center;
+                border-bottom: 1px solid #d4af37;
+                width: 100%;
+            }
+
+            .menu-responsive ul li a {
+                color: #d4af37; /* Ajuste para cor dourada */
+                text-decoration: none;
+                font-size: 18px;
+                width: 100%;
+                display: block;
+            }
+
+            .menu-open {
+                display: block;
+            }
+        }
+
+        /* Ajuste para não responsivo (Desktop) */
+        @media (min-width: 769px) {
+            .hamburger-menu {
+                display: none; /* Esconder o ícone de hambúrguer em telas grandes */
+            }
+
+            .menu-responsive {
+                display: none; /* Certificar que o menu responsivo não apareça em telas grandes */
+            }
+        }
     </style>
 </head>
 
@@ -133,6 +214,16 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         </div>
 
         <div class="right-icons">
+            <!-- Barra de busca ao lado dos ícones -->
+            <div class="search-container">
+                <form action="busca.php" method="GET">
+                    <input type="text" name="q" placeholder="Buscar produtos..." required>
+                    <button type="submit">
+                        <i class="fas fa-search"></i> <!-- Ícone de busca (lupa) -->
+                    </button>
+                </form>
+            </div>
+
             <!-- Ícone do carrinho de compras -->
             <div class="cart-icon" onclick="window.location.href='/cardapio-dinamico/carrinho.php'">
                 <i class="fas fa-shopping-cart"></i>
@@ -145,19 +236,13 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
                 <?php endif; ?>
             </div>
 
-            <!-- Barra de busca ao lado do carrinho -->
-            <div class="search-container">
-                <form action="busca.php" method="GET">
-                    <input type="text" name="q" placeholder="Buscar produtos..." required>
-                    <button type="submit">
-                        <i class="fas fa-search"></i> <!-- Ícone de busca (lupa) -->
-                    </button>
-                </form>
+            <!-- Ícone de hambúrguer para telas pequenas -->
+            <div class="hamburger-menu" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
             </div>
         </div>
     </header>
 
-    <!-- Menu dentro da área preta -->
     <nav>
         <ul>
             <?php foreach ($sections as $id => $section): ?>
@@ -175,6 +260,26 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             <?php endif; ?>
         </ul>
     </nav>
+
+    <!-- Menu que será exibido ao clicar no ícone de hambúrguer (somente para mobile) -->
+    <div class="menu-responsive">
+        <!-- Botão de fechar -->
+        <span class="close-btn" onclick="toggleMenu()">&times;</span>
+        <ul>
+            <?php foreach ($sections as $id => $section): ?>
+                <li><a href="<?php echo $section['url']; ?>"><?php echo $section['title']; ?></a></li>
+            <?php endforeach; ?>
+
+            <?php if (!isset($_SESSION['user_id'])): ?>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="cadastro.php">Cadastrar</a></li>
+            <?php else: ?>
+                <li><a href="perfil.php">Meu Perfil</a></li>
+                <li><a href="meus_pedidos.php">Meus Pedidos</a></li>
+                <li><a href="logout.php">Logout</a></li>
+            <?php endif; ?>
+        </ul>
+    </div>
 
     <div class="banner">
         <img src="<?php echo $banner_image_path; ?>" alt="Banner" style="width:100%; height:auto;">
@@ -208,7 +313,12 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         ?>
     </footer>
 
-    <!-- Inclui o script.js se a página for acessada diretamente -->
     <script src="assets/js/script.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.menu-responsive');
+            menu.classList.toggle('menu-open');
+        }
+    </script>
 </body>
 </html>
