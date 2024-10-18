@@ -57,6 +57,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
         }
         .search-container {
             display: flex;
+            margin-right: 10px; 
             align-items: center;
             background-color: white;
             border-radius: 20px;
@@ -87,6 +88,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             cursor: pointer;
         }
         .cart-icon {
+            margin-right: 20px;
             position: relative;
         }
         .cart-count {
@@ -119,10 +121,7 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
             gap: 15px;
             justify-content: center;
         }
-        nav ul li a {
-            text-decoration: none;
-            color: #d4af37; /* Links do menu em dourado */
-        }
+        
         footer {
             background-color: <?php echo $primary_color; ?>;
         }
@@ -302,10 +301,8 @@ $is_admin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
     </main>
 
     <footer>
-        <p>&copy; 2024 <?php echo $site_name; ?>. Todos os direitos reservados.</p>
-        <ul>
-            <li><a href="admin/login.php">Painel Administrativo</a></li>
-        </ul>
+        <?php
+    include $_SERVER['DOCUMENT_ROOT'] . '/cardapio-dinamico/footer.php';?>
         <?php 
         if ($is_admin && file_exists('admin/logout.php')) {
             include 'admin/logout.php';

@@ -17,6 +17,9 @@
     margin-bottom: 20px;
 }
 
+.cadastro-container a {
+    color:#0c03b9;
+}
 .cadastro-form label {
     color: #d4af37; /* Cor do texto do label */
     display: block;

@@ -52,7 +52,9 @@
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
-
+.login-form a{
+    color: #0c03b9;
+}
 .login-form button:hover {
     background-color: #ecbe54; /* Mudança de cor ao passar o mouse */
 }
