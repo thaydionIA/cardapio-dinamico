@@ -24,6 +24,7 @@ echo "Bem-vindo, " . htmlspecialchars($_SESSION['usuario']['nome']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo</title>
     <link rel="stylesheet" href="assets/css/admin_style.css">
+    
 </head>
 <body>
     <div class="admin-container">

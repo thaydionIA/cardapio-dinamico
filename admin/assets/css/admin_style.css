@@ -28,7 +28,13 @@ body {
     overflow-wrap: break-word;
     overflow: hidden;
 }
-
+.admin-container a  {
+    color: #0c03b9;
+    text-decoration: none;
+}
+.admin-container a:hover  {
+    text-decoration: underline;
+}
 h1 {
     color: #444;
     margin-bottom: 20px;
