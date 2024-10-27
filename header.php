@@ -255,5 +255,53 @@ document.addEventListener('click', function(event) {
 });
 </script>
 
+<style>
+    /* Outras estilizações */
+
+    .cart-icon {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 25px; /* Tamanho padrão para telas maiores */
+        color: #d4af37;
+    }
+
+    /* Ícones para o modo responsivo */
+    .responsive-icons {
+        display: none; /* Oculto por padrão, visível apenas em telas pequenas */
+        justify-content: space-between; /* Mantém os ícones nos extremos */
+        width: 100%;
+        position: fixed; /* Garante que os ícones fiquem fixos no topo */
+        top: 10px;
+        left: 0;
+        padding: 0 15px;
+        z-index: 1000;
+    }
+
+    .responsive-icons a {
+        display: inline-block;
+    }
+
+    /* Responsividade para o ícone do carrinho */
+    @media screen and (max-width: 768px) {
+        .responsive-icons {
+            display: flex;
+        }
+        .return-button-container {
+            display: none;
+        }
+        nav {
+            display: none; /* Ocultar o menu de navegação no modo responsivo */
+        }
+        .cart-icon {
+            position: absolute;
+            top: 45px; /* Define a posição do carrinho logo abaixo do ícone de hambúrguer */
+            right: 15px; /* Alinha o carrinho no lado direito da tela */
+            font-size: 18px; /* Diminui o tamanho do ícone em telas menores */
+        }
+    }
+</style>
+
+
 </body>
 </html>
