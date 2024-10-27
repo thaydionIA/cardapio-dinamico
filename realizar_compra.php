@@ -97,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forma_pagamento'])) {
     <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer;">Confirmar Pagamento</button>
 </form>
 
+<script src="assets/js/script.js"></script>
 <?php
 include 'footer.php'; // Inclua o rodapé se necessário
 ob_end_flush(); // Envia todo o conteúdo do buffer
